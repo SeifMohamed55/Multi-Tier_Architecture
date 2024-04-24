@@ -1,0 +1,68 @@
+header {
+    position: relative;
+    background-color: #2c3e50; /* Dark green background color for the header */
+    padding: 0;
+    border-bottom: 1px solid #2c3e50; /* Slightly lighter border color */
+    color: #fff; /* White text color */
+}
+
+a {
+    color: #fff; /* White text color for links */
+}
+
+a:hover {
+    background-color: #2c3e50; /* Slightly darker background on hover */
+    color: #fff; /* White text color on hover */
+    cursor: pointer;
+    transition: background-color 0.2s; /* Reduce hover transition */
+}
+
+.container {
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+}
+
+a.logo {
+    font-weight: bold;
+    padding: 1rem;
+}
+
+ul {
+    display: flex;
+    list-style-type: none;
+    margin: 0;
+}
+
+ul a {
+    padding: 1rem;
+    display: inline-block;
+}
+
+a span {
+    background-color: #e74c3c; /* Red span background color */
+    color: #fff; /* White text color */
+    padding: 0.1rem 0.45rem;
+    border-radius: 100rem;
+    font-size: 0.9rem;
+}
+
+.menu-container {
+    position: relative;
+}
+
+.menu {
+    position: absolute;
+    z-index: 1;
+    background-color: #2c3e50; /* Dark blue menu background color */
+    display: none;
+}
+
+.menu-container:hover .menu {
+    display: block;
+}
+
+.menu a {
+    width: 100%;
+    min-width: 8rem;
+}

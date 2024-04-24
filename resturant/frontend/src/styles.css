@@ -1,0 +1,29 @@
+/* You can add global styles to this file, and also import other style files */
+@import url("https://fonts.googleapis.com/css2?family=Quicksand&display=swap");
+
+*{
+    box-sizing: border-box;
+}
+
+html{
+    font-size: 16px;
+}
+
+html, button{
+    font-family: "Quicksand", "sans-serif";
+}
+
+body{
+    margin: 0;
+}
+
+a{
+    text-decoration: none;
+}
+body {
+    background-color: #333; /* Dark blue background for the body */
+    color: #fff; /* White text color */
+    font-family: Arial, sans-serif; /* Optional: Set a font-family */
+    margin: 0; /* Remove default margin */
+    padding: 0; /* Remove default padding */
+}

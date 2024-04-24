@@ -1,0 +1,6 @@
+netstat -aon | findstr :8080
+taskkill /F /PID 
+
+FOR /F "tokens=5" %a IN ('netstat -aon ^| findstr :8080') DO tasklist | findstr %a
+
+mvnw spring-bootrun

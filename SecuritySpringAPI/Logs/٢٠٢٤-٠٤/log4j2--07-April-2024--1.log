@@ -1,0 +1,5 @@
+2024-04-07 18:31:32,005 ERROR c.f.s.l.RegisterController [https-jsse-nio-443-exec-6] No value present
+2024-04-07 18:31:44,141 ERROR c.f.s.l.RegisterController [https-jsse-nio-443-exec-1] at controller: studentId: 0
+FullName: Seif Kharbosh
+Department: Mechanichal Power
+Authorities: ROLE_USER
