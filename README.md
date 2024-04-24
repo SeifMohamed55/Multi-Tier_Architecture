@@ -1,2 +1,2 @@
 # TwoTieredArchitecture
-A Restaurant website using Spring boot - angualar
+A Restaurant website using Spring boot - angular
