@@ -26,13 +26,16 @@ public class AESEncryptor {
 	
 	private Logger logger = Loggers.getControllersLogger();
 
-	public AESEncryptor() {
-		try {
-			this.secretKey = generateSecretKey();
-			this.iv = generateIv();
-		} catch (Exception ex) {
-			ex.getStackTrace();
-		}
+	public AESEncryptor(Environment env) {
+//		try {
+//			this.secretKey = generateSecretKey();
+//			this.iv = generateIv();
+//		} catch (Exception ex) {
+//			ex.getStackTrace();
+//		}
+		
+        this.secretKey = new SecretKeySpec(HexFormat.of().parseHex(env.getProperty("my.property.AESkey")), "AES");
+        this.iv = new IvParameterSpec(HexFormat.of().parseHex(env.getProperty("my.property.ivKey"))); 
 
 	}
 	

@@ -3,14 +3,13 @@ import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { User } from '../shared/models/User';
 import { IUserLogin } from '../shared/interfaces/IUserLogin';
 import { HttpClient } from '@angular/common/http';
-import { USER_LOGIN_URL, USER_REGISTER_URL } from '../shared/models/constatns/urls';
+import { USER_LOGIN_URL, USER_REGISTER_URL, USER_KEY } from '../shared/models/constatns/urls';
 import { ToastrService } from 'ngx-toastr';
 import { IUserRegister } from '../shared/interfaces/IUserRegister';
 import {IUserRegisterWithoutConfirmPassword} from '../shared/interfaces/IUserRegister';
 import { EncryptionService } from './AES.service'
 
 
-const USER_KEY = 'User';
 @Injectable({
   providedIn: 'root'
 })
@@ -34,6 +33,7 @@ export class UserService {
         next: (user) =>{        
           debugger
           this.setUserToLocalStorage(user);
+          localStorage.setItem("token", user.token);
           this.userSubject.next(user);
           this.toastrService.success(
             `Welcome to Foodmine ${user.name}!`,

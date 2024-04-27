@@ -27,7 +27,7 @@ public class ClientService {
 
 	private Logger logger = Loggers.getDBLogger();
 
-	public boolean saveStudent(Client client) {
+	public boolean saveClient(Client client) {
 		if (client.hasNullField()) {
 			logger.error("Input Error: student fields cannot be null");
 			return false;

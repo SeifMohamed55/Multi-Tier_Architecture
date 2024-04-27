@@ -10,10 +10,13 @@ export const USER_LOGIN_URL =BASE_URL + '/login';
 export const USER_REGISTER_URL = BASE_URL + '/register';
 
 
-export const ORDERS_URL = BASE_URL + '/api/orders';
+export const ORDERS_URL = BASE_URL + '/order';
 export const ORDER_CREATE_URL = ORDERS_URL + '/create';
 export const ORDER_NEW_FOR_CURRENT_USER_URL = ORDERS_URL + '/newOrderForCurrentUser';
 
 export const ORDER_PAY_URL = ORDERS_URL + '/pay';
 export const ORDER_TRACK_URL = ORDERS_URL + '/track/';
+
+export const USER_KEY = 'User';
+
 

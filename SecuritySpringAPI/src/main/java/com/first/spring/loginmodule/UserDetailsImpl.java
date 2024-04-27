@@ -83,6 +83,10 @@ public class UserDetailsImpl implements UserDetails {
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return authorities;		
 	}
+	
+	public Set<Role> getRoles(){
+		return this.authorities;
+	}
 
 	@Override
 	public String getUsername() {
@@ -160,5 +164,7 @@ public class UserDetailsImpl implements UserDetails {
 	public void setId(long id) {
 		this.id = id;
 	}
+	
+	
 
 }

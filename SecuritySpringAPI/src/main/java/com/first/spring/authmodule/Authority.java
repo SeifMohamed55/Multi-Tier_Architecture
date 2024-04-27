@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.first.spring.clientmodule.Client;
 
 import jakarta.persistence.Column;
@@ -18,7 +19,6 @@ import jakarta.persistence.ManyToMany;
 @Entity
 public class Authority implements GrantedAuthority {
 	
-	
 	private static final long serialVersionUID = 8088816845104367210L;
 
 
@@ -30,6 +30,7 @@ public class Authority implements GrantedAuthority {
 	private String authName; // Authority name (e.g., "ROLE_ADMIN", "USER")
 	
 	@ManyToMany(mappedBy = "authorities")
+	@JsonIgnore
 	private Set<Client> students = new HashSet<Client>();
 
 	

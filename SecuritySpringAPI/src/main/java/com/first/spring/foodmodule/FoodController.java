@@ -94,68 +94,8 @@ public class FoodController {
 
 	}
 
-	@PreAuthorize("hasRole('ADMIN')")
-	@PostMapping("/add")
-	public ResponseEntity<Object> addFood(@RequestBody String map) {
 
-		ObjectMapper mapper = new ObjectMapper();
-		Food food;
-		try {
-			food = mapper.readValue(map, Food.class);
-			var details = foodService.save(food);
-			return ResponseEntity.ok(details);
-		} catch (Exception ex) {
-			logger.error(ex.getLocalizedMessage());
-			return ResponseEntity.badRequest().body("Food Structure is unaccepted");
-		}
-	}
-
-	@PreAuthorize("hasRole('ADMIN')")
-	@PostMapping("/hide")
-	public ResponseEntity<Object> hideFood(@RequestBody String map) {
-
-		ObjectMapper mapper = new ObjectMapper();
-		Food food;
-		try {
-			food = mapper.readValue(map, Food.class);
-			food.setHidden(true);
-			var details = foodService.save(food);
-			return ResponseEntity.ok(details);
-		} catch (Exception ex) {
-			logger.error(ex.getLocalizedMessage());
-			return ResponseEntity.badRequest().body("Food Structure is unaccepted");
-		}
-	}
-
-	@PostMapping("/unhide")
-	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity<Object> unhideFood(@RequestBody String map) {
-
-		ObjectMapper mapper = new ObjectMapper();
-		Food food;
-		try {
-			food = mapper.readValue(map, Food.class);
-			food.setHidden(false);
-			var details = foodService.save(food);
-			return ResponseEntity.ok(details);
-		} catch (Exception ex) {
-			logger.error(ex.getLocalizedMessage());
-			return ResponseEntity.badRequest().body("Food Structure is unaccepted");
-		}
-	}
 	
-//	@PostMapping("/addAll")
-//	public ResponseEntity<Object> addAllFood(@RequestBody List<Food> foods) {
-//
-//		try {
-//			for(Food food : foods) {
-//				foodService.save(food);
-//			}
-//			return ResponseEntity.ok("Added Successfully");
-//		} catch (Exception ex) {
-//			logger.error(ex.getLocalizedMessage());
-//			return ResponseEntity.badRequest().body("Food Structure is unaccepted");
-//		}
-//	}
+
 
 }

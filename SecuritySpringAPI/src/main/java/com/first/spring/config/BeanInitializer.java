@@ -35,7 +35,7 @@ public class BeanInitializer {
 	@Bean
 	@Autowired
 	public AESEncryptor aesEnc(Environment env) {
-		return new AESEncryptor();
+		return new AESEncryptor(env);
 	}
 
 }

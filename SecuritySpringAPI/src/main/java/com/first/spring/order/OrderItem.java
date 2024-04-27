@@ -25,8 +25,9 @@ public class OrderItem {
     @JoinColumn(name = "order_id")
     @JsonIgnore
     private Order order;
-    
+    	
 	private Double price;
+	
 	private int quantity;
 
 	public OrderItem() {
@@ -34,13 +35,33 @@ public class OrderItem {
 	}
 
 	
-	public OrderItem(Food food, Double price, int quantity) {
+	public OrderItem(Food food, Double price, int quantity, Order order) {
 		this.food = food;
 		this.price = price;
 		this.quantity = quantity;
+		this.order = order;
 	}
 
 
+	
+	public Long getId() {
+		return id;
+	}
+
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+
+	public Order getOrder() {
+		return order;
+	}
+
+
+	public void setOrder(Order order) {
+		this.order = order;
+	}
 
 	public Food getFood() {
 		return food;

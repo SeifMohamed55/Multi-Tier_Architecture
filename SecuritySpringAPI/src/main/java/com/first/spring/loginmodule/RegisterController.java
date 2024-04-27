@@ -42,9 +42,9 @@ public class RegisterController {
         try {
         	client = mapper.readValue(entity, Client.class);
         	client.getAuthorities().add(authServ.getAuthorityById(Role.ROLE_USER));
-            var details = clientService.saveStudent(client);
+            var details = clientService.saveClient(client);
             
-            return ResponseEntity.ok(details);
+            return ResponseEntity.ok("true");
         }catch(DatabindException ex) {
         	logger.error(ex.getLocalizedMessage());
         	
@@ -53,7 +53,7 @@ public class RegisterController {
         }catch(Exception ex) {
         	logger.error(ex.getLocalizedMessage());
         }
-        return ResponseEntity.badRequest().body("Bad Request");
+        return ResponseEntity.badRequest().body("Failed To register");
     }
 	
 	@PostMapping("/admin")
@@ -66,9 +66,9 @@ public class RegisterController {
         	client = mapper.readValue(entity, Client.class);
         	client.getAuthorities().add(authServ.getAuthorityById(Role.ROLE_USER));
         	client.getAuthorities().add(authServ.getAuthorityById(Role.ROLE_ADMIN));
-            var details = clientService.saveStudent(client);
+            var details = clientService.saveClient(client);
             
-            return ResponseEntity.ok(details);
+            return ResponseEntity.ok("true");
         }catch(DatabindException ex) {
         	logger.error(ex.getLocalizedMessage());
         	

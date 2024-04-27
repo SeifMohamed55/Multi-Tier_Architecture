@@ -1,6 +1,7 @@
 package com.first.spring.order;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,6 +77,14 @@ public class OrderService {
 		}
 
 	}
+	
+	public List<Order> getOrdersByStatusNewOrderedByUpdatedAt(OrderStatus stat, Long clientId ) {
+		var newOrders = orderRepo.findByStatusAndClient_IdOrderByUpdatedAtDesc(stat, clientId);
+		if(newOrders.isPresent()) {
+			return newOrders.get();			
+		}
+        return List.of(); 
+    }
 	
 	
 

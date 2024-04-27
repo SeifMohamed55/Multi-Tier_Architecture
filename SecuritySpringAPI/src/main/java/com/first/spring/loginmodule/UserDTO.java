@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.first.spring.authmodule.Authority;
+import com.first.spring.authmodule.Role;
 import com.first.spring.foodmodule.Food;
 
 public class UserDTO implements Serializable {
@@ -23,6 +25,7 @@ public class UserDTO implements Serializable {
 
     private Set<Food> favFood = new HashSet<>();
 
+    private Set<Role> roles = new HashSet<>();
 	
 
 	public UserDTO(UserDetailsImpl client) {
@@ -30,8 +33,14 @@ public class UserDTO implements Serializable {
 		this.token = client.getToken();
 		this.address = client.getAddress();
 		copyFoodSet(client.getFavFood());
+		this.setRoles(client.getRoles());
 		this.setName(client.getFullName());
 		this.id = client.getId();
+	}
+
+	
+	public UserDTO() {
+		
 	}
 
 
@@ -99,6 +108,20 @@ public class UserDTO implements Serializable {
 
 	public void setFavFood(Set<Food> favFood) {
 		this.favFood = favFood;
+	}
+
+
+
+
+	public Set<Role> getRoles() {
+		return roles;
+	}
+
+
+
+
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
 	}
 
 	
