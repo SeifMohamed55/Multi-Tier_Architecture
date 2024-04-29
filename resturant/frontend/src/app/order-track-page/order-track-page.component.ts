@@ -14,8 +14,9 @@ export class OrderTrackPageComponent implements OnInit {
   constructor(activatedRoute: ActivatedRoute,
               orderService:OrderService) {
      const params = activatedRoute.snapshot.params;
-     if(!params.orderId) return;
+     console.log(params)
 
+     if(!params.orderId) return;
      orderService.trackOrderById(params.orderId).subscribe(order => {
        this.order = order;
      })

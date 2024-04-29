@@ -65,8 +65,6 @@ public class OrderService {
 	
 	public boolean payForOrder(Order order) {
 		try {
-			if(order.getTotalPrice() > order.getPayment().getAmount().doubleValue()) 
-				throw new Exception();
 			order.setStatus(OrderStatus.PAYED);
 			orderRepo.save(order);
 			return true;
@@ -86,6 +84,12 @@ public class OrderService {
         return List.of(); 
     }
 	
-	
+	public Order findOrderById( Long orderId ) {
+		var newOrder = orderRepo.findById(orderId);
+		if(newOrder.isPresent()) {
+			return newOrder.get();			
+		}
+        return null;
+    }
 
 }

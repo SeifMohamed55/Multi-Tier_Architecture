@@ -40,7 +40,7 @@ public class SecurityConfig  {
 						.anyRequest().authenticated())
 				.userDetailsService(loginService)
 				.addFilterBefore(new JwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-				.sessionManagement(ses -> ses.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+				.sessionManagement(ses -> ses.sessionCreationPolicy(SessionCreationPolicy.STATELESS))				
 				.formLogin(auth -> auth.disable())
 				.logout(log -> log.disable());
 				

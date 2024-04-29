@@ -59,24 +59,43 @@ public class OrderController {
 		}
 	}
 	
+	@GetMapping("/track/{id}")
+	public ResponseEntity<Object> trackOrder(@PathVariable("id") Long id){
+		
+		try {
+			Order order = orderService.findOrderById(id);
+			return ResponseEntity.ok(new OrderResponseDTO(order));
+
+		}catch(Exception ex) {
+			logger.error(ex.getLocalizedMessage());
+			return ResponseEntity.notFound().build();
+		}
+				
+	}
+	
 	@GetMapping("/newOrderForCurrentUser/{id}")
 	public ResponseEntity<Object> getNewOrder(@PathVariable("id") Long id){
 		List<Order> order = orderService.getOrdersByStatusNewOrderedByUpdatedAt(OrderStatus.NEW, id);
 		if(order.size() > 0) {
-			return ResponseEntity.ok(order.getFirst());
+			OrderResponseDTO response = new OrderResponseDTO(order.getFirst());
+			return ResponseEntity.ok(response);
 		}
 		return ResponseEntity.ok(List.of());
 	}
 	
+	//4111111111....
 	@PostMapping("/pay")
-	public ResponseEntity<Object> payForOrder(@RequestBody String entity){
+	public ResponseEntity<Object> payForOrder(@RequestBody String myAngOrder){
+		
 		ObjectMapper mapper = new ObjectMapper();
-		Order order;
+		Order angOrder;
 		try {
-			order = mapper.readValue(entity, Order.class);
+			angOrder = mapper.readValue(myAngOrder, Order.class);
+			Order order = orderService.findOrderById(angOrder.getId());
 			order.setStatus(OrderStatus.PAYED);
+			order.setPaymentId(angOrder.getPaymentId());
 			var details = orderService.saveOrder(order);
-			return ResponseEntity.ok(details);
+			return ResponseEntity.ok(details.getId());
 		} catch (Exception ex) {
 			logger.error(ex.getLocalizedMessage());
 			return ResponseEntity.badRequest().body("Order Structure is unaccepted");

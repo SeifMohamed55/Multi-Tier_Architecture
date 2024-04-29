@@ -23,6 +23,13 @@ public class CacheService {
 		}
 	}
 	
+	public void putUserDetailsInCache(UserDetailsImpl userDetails) {
+	    Cache cache = cacheManager.getCache(Constants.USER_CACHE_NAME);
+	    if (cache != null) {
+	      cache.put(userDetails.getUsername(), userDetails); // Use email as key
+	    }
+	  }
+	
 	public UserDetailsImpl getCachedUserByEmail(String email) {
 		Cache cache = cacheManager.getCache(Constants.USER_CACHE_NAME);
 	    Cache.ValueWrapper wrapper = cache.get(email);

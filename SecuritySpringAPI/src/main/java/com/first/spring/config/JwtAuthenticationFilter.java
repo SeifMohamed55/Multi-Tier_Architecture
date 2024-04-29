@@ -14,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.first.spring.authmodule.Role;
+import com.first.spring.utilities.CacheService;
 import com.first.spring.utilities.Constants;
 import com.first.spring.utilities.JwtTokenUtil;
 import com.first.spring.utilities.Loggers;
@@ -34,7 +35,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			throws ServletException, IOException {
 
 		JwtTokenUtil jwtUtil = new JwtTokenUtil(); // cannot autowire
-
+		CacheService service = new CacheService();
+		
 		String token = jwtUtil.extractToken(request);
 		String path = request.getServletPath();
 		boolean needsAuthentication = true;
@@ -62,6 +64,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 					Date expiration = claims.getExpiration();
 					if (expiration.before(new Date())) {
 						// Handle token expiration
+						service.evictUserFromCache(email);
 						throw new JwtException("Token has expired");
 					}
 					Authentication authentication = new UsernamePasswordAuthenticationToken(email, "", authorities);

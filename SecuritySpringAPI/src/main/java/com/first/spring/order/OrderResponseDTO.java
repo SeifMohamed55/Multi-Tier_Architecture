@@ -3,20 +3,7 @@ package com.first.spring.order;
 import java.sql.Date;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.first.spring.clientmodule.Client;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 
 public class OrderResponseDTO {
 
@@ -39,7 +26,7 @@ public class OrderResponseDTO {
 	
 	private Date updatedAt;
 	
-    private Payment payment;
+    private String paymentId;
     
     
     
@@ -53,7 +40,7 @@ public class OrderResponseDTO {
 		 this.status = order.getStatus();
 		 this.createdAt = order.getCreatedAt();
 		 this.updatedAt = order.getUpdatedAt();
-		 this.payment = order.getPayment();
+		 this.setPaymentId(order.getPaymentId());
 	 }
 
     
@@ -130,12 +117,15 @@ public class OrderResponseDTO {
 		this.updatedAt = updatedAt;
 	}
 
-	public Payment getPayment() {
-		return payment;
+
+	public String getPaymentId() {
+		return paymentId;
 	}
 
-	public void setPayment(Payment payment) {
-		this.payment = payment;
+
+
+	public void setPaymentId(String paymentId) {
+		this.paymentId = paymentId;
 	}
 
 	

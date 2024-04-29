@@ -11,7 +11,7 @@ import { TagsComponent } from './tags/tags.component';
 import { CartPageComponent } from './cart-page/cart-page.component';
 import { TitleComponent } from './title/title.component';
 import { NotFoundComponent } from './not-found/not-found.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
 import { LoginPageComponent } from './login-page/login-page.component';
@@ -30,6 +30,13 @@ import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
 import { PaymentPageComponent } from './payment-page/payment-page.component';
 import { PaypalButtonComponent } from './paypal-button/paypal-button.component';
 import { OrderTrackPageComponent } from './order-track-page/order-track-page.component';
+import { ProfileComponent } from './profile/profile.component';
+import { PasswordService } from './services/password.service';
+
+
+
+  
+
 
 
 
@@ -57,7 +64,10 @@ import { OrderTrackPageComponent } from './order-track-page/order-track-page.com
     PaymentPageComponent,
     PaypalButtonComponent,
     OrderTrackPageComponent,
-  
+    ProfileComponent,
+   
+
+   
     
   ],
   imports: [
@@ -65,6 +75,8 @@ import { OrderTrackPageComponent } from './order-track-page/order-track-page.com
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
+    FormsModule,
+
     ReactiveFormsModule,
     ToastrModule.forRoot({
       timeOut:3000,
@@ -74,7 +86,8 @@ import { OrderTrackPageComponent } from './order-track-page/order-track-page.com
   ],
   providers: [
     {provide:HTTP_INTERCEPTORS, useClass:AuthInterceptor, multi: true },
-    {provide:HTTP_INTERCEPTORS, useClass:LoadingInterceptor, multi: true }
+    {provide:HTTP_INTERCEPTORS, useClass:LoadingInterceptor, multi: true },
+    PasswordService
   ],
   bootstrap: [AppComponent],
 })

@@ -1,27 +1,29 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { User } from '../shared/models/User';
-import { IUserLogin } from '../shared/interfaces/IUserLogin';
-import { HttpClient } from '@angular/common/http';
-import { USER_LOGIN_URL, USER_REGISTER_URL, USER_KEY } from '../shared/models/constatns/urls';
+import { IUserLogin  } from '../shared/interfaces/IUserLogin';
+import { IUserRegisterWithoutConfirmPassword } from '../shared/interfaces/IUserRegister';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { USER_LOGIN_URL, USER_REGISTER_URL , USER_UPDATE_URL, USER_CHANGE_PASSWORD_URL, USER_LOGOUT_URL} from '../shared/models/constatns/urls';
 import { ToastrService } from 'ngx-toastr';
-import { IUserRegister } from '../shared/interfaces/IUserRegister';
-import {IUserRegisterWithoutConfirmPassword} from '../shared/interfaces/IUserRegister';
 import { EncryptionService } from './AES.service'
+import { CartService } from './cart.service';
 
 
+const USER_KEY = 'User';
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  private userSubject =
-  new BehaviorSubject<User>(this.getUserFromLocalStorage());
-  public userObservable:Observable<User>;
-  constructor(private http:HttpClient, private toastrService:ToastrService, private encryptionService:EncryptionService) {
+  public userSubject = new BehaviorSubject<User>(this.getUserFromLocalStorage());
+  public userObservable: Observable<User>;
+  
+
+  constructor(private http: HttpClient, private toastrService:ToastrService, private encryptionService : EncryptionService, private cartService: CartService) {
     this.userObservable = this.userSubject.asObservable();
   }
 
-  public get currentUser():User{
+  public get currentUser(): User {
     return this.userSubject.value;
   }
 
@@ -31,7 +33,6 @@ export class UserService {
     return this.http.post<User>(USER_LOGIN_URL, userLogin).pipe(
       tap({
         next: (user) =>{        
-          debugger
           this.setUserToLocalStorage(user);
           localStorage.setItem("token", user.token);
           this.userSubject.next(user);
@@ -71,22 +72,68 @@ export class UserService {
     )
   }
 
-
-  logout(){
-    this.userSubject.next(new User());
-    localStorage.removeItem(USER_KEY);
-    window.location.reload();
+ /* logout(): Observable<void> {
+    return this.http.post<void>(USER_LOGOUT_URL, {}).pipe(
+      tap(() => {
+        this.userSubject.next(null);
+        localStorage.removeItem(USER_KEY);
+      })
+    );
   }
-  private setUserToLocalStorage(user:User){
+  */
+  
+
+
+  logout() {
+    this.userSubject.next(new User());
+    return this.http.post(USER_LOGOUT_URL, this.getUserFromLocalStorage(),{ 
+      responseType: 'text' ,
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem("token")}`
+      })
+  }).subscribe({
+      next: () => {
+        // Handle successful logout
+        localStorage.removeItem(USER_KEY);
+        this.cartService.clearCart();
+        window.location.reload();
+        this.toastrService.success('User Logged out Successfully');
+    },
+      error: (errorResponse) => {
+        localStorage.removeItem(USER_KEY);
+        this.cartService.clearCart();
+        window.location.reload();
+        this.toastrService.error(errorResponse.error, 'Logout Failed');
+        // Handle specific errors (e.g., network errors)
+      }
+  });
+  }
+  
+
+
+  updateUser(user: User): Observable<User> {
+    return this.http.put<User>(USER_UPDATE_URL, user).pipe(
+      tap(updatedUser => {
+        this.setUserToLocalStorage(updatedUser);
+        this.userSubject.next(updatedUser);
+      })
+    );
+  }
+
+  changePassword(oldPassword: string, newPassword: string): Observable<void> {
+    return this.http.put<void>(USER_CHANGE_PASSWORD_URL, { oldPassword, newPassword });
+  }
+
+ 
+
+  private setUserToLocalStorage(user: User) {
     localStorage.setItem(USER_KEY, JSON.stringify(user));
   }
-  private getUserFromLocalStorage():User{
+
+  private getUserFromLocalStorage(): User {
     const userJson = localStorage.getItem(USER_KEY);
-    if(userJson) return JSON.parse(userJson) as User;
+    if (userJson) return JSON.parse(userJson) as User;
     return new User();
   }
-
-
-
-
 }

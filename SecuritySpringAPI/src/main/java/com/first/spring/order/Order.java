@@ -30,9 +30,7 @@ public class Order {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	
-	
-	
+			
 	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<OrderItem> items;
 
@@ -57,18 +55,20 @@ public class Order {
 	
 	private Date updatedAt;
 	
-	@OneToOne
-    private Payment payment;
+//	@OneToOne
+//    private Payment payment;
+	
+	private String paymentId;
 	
 	public Order(long id, List<OrderItem> items, double totalPrice, String name, String address, LatLng addressLatLng,
-			long paymentId, OrderStatus status, Client client, Date createdAt, Date updatedAt) {
+			String paymentId, OrderStatus status, Client client, Date createdAt, Date updatedAt) {
 		this.id = id;
 		this.items = items;
 		this.totalPrice = totalPrice;
 		this.name = name;
 		this.address = address;
 		this.addressLatLng = addressLatLng;
-		//this.paymentId = paymentId;
+		this.paymentId = paymentId;
 		this.status = status;
 		this.client = client;
 		this.createdAt = createdAt;
@@ -87,13 +87,13 @@ public class Order {
 		this.id = id;
 	}
 	
-	public Payment getPayment() {
-		return payment;
-	}
-
-	public void setPayment(Payment payment) {
-		this.payment = payment;
-	}
+//	public Payment getPayment() {
+//		return payment;
+//	}
+//
+//	public void setPayment(Payment payment) {
+//		this.payment = payment;
+//	}
 
 	public List<OrderItem> getItems() {
 		return items;
@@ -173,6 +173,14 @@ public class Order {
 
 	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
+	}
+
+	public String getPaymentId() {
+		return paymentId;
+	}
+
+	public void setPaymentId(String paymentId) {
+		this.paymentId = paymentId;
 	}
 
 }

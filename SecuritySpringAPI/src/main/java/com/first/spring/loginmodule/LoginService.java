@@ -22,7 +22,7 @@ import jakarta.persistence.EntityNotFoundException;
 public class LoginService implements UserDetailsService  {
 
 	@Autowired
-	private ClientRepository studentRepo;
+	private ClientRepository clientRepo;
 	
 	@Autowired
 	private JwtTokenUtil jwtUtil;
@@ -35,31 +35,31 @@ public class LoginService implements UserDetailsService  {
 	
 	private Logger logger = Loggers.getDBLogger();
 	
-	@Cacheable(cacheNames = Constants.USER_CACHE_NAME, key = "#email")
 	public UserDetailsImpl logIn(String email, String password) {
-		Client student = null;
+		Client client = null;
 		int retries = 0;
 		while (retries < Constants.MAX_RETRIES) {
 			try {
-				student = studentRepo.findByEmail(email);
+				client = clientRepo.findByEmail(email);
 				break;
 			} catch (OptimisticLockingFailureException ex) {
 				logger.error(ex.getMessage());
 				retries++;
 			}
 		}
-		if(student == null)
+		if(client == null)
 			return null;
 		
 		
-		if(encoder.matches(password, student.getPassword())) {
-			student.getAuthorities().size();
-			UserDetailsImpl studentDetailForCache = new UserDetailsImpl(student);
-			studentDetailForCache.setToken(jwtUtil.generateAccessToken(studentDetailForCache));
-			return studentDetailForCache;
+		if(encoder.matches(password, client.getPassword())) {
+			client.getAuthorities().size();
+			UserDetailsImpl clientDetails = saveToCache(client);
+			clientDetails.setToken(jwtUtil.generateAccessToken(clientDetails));
+			return clientDetails;
 		}
 		return null;
 	}
+	
 	
 	public boolean register(Client student) {
 		if(student == null) return false;
@@ -73,7 +73,7 @@ public class LoginService implements UserDetailsService  {
 
 			try {
 				student.setPassword(encoder.encode(student.getPassword()));
-				var savedEntity = studentRepo.save(student);
+				var savedEntity = clientRepo.save(student);
 				logger.info("student: " + savedEntity.toString());
 				return true;
 
@@ -94,25 +94,23 @@ public class LoginService implements UserDetailsService  {
 		return false;
 	}
 	
-	private Client getStudentByEmail(String email) {
-		Client student;
-		try {
-			student = studentRepo.findByEmail(email);
-		} catch (EntityNotFoundException ex) {
-			logger.error(ex.getLocalizedMessage());
-			return null;
-		}
-		return student;
+	@Cacheable(cacheNames = Constants.USER_CACHE_NAME, key = "#client.email")
+	private UserDetailsImpl saveToCache(Client client) {
+		
+		var clientDetails = new UserDetailsImpl(client);
+		cacheService.putUserDetailsInCache(clientDetails);
+		return clientDetails;
+		 
 	}
 
 	@Override
 	@Cacheable(cacheNames = Constants.USER_CACHE_NAME, key = "#email")
 	public UserDetailsImpl loadUserByUsername(String email) throws UsernameNotFoundException {	
-		Client student = getStudentByEmail(email);
-		if(student == null)
+		Client client = clientRepo.findByEmail(email);
+		if(client == null)
 			throw new UsernameNotFoundException("User not found with email: " + email);
 		
-		UserDetailsImpl details = new UserDetailsImpl(student);
+		UserDetailsImpl details = new UserDetailsImpl(client);
 		return details;
 	}
 	
