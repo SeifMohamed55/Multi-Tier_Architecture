@@ -32,6 +32,15 @@ import { PaypalButtonComponent } from './paypal-button/paypal-button.component';
 import { OrderTrackPageComponent } from './order-track-page/order-track-page.component';
 import { ProfileComponent } from './profile/profile.component';
 import { PasswordService } from './services/password.service';
+import { OrdersComponent } from './orders/orders.component';
+import { AdminPageComponent } from './admin-page/admin-page.component';
+import { AdminUsersComponent } from './admin-users/admin-users.component';
+import { AdminFoodsComponent } from './admin-foods/admin-foods.component';
+import { AdminAdminsComponent } from './admin-admins/admin-admins.component';
+import { EditFoodComponent } from './edit-food/edit-food.component';
+import { AddFoodComponent } from './add-food/add-food.component';
+import { AddAdminComponent } from './add-admin/add-admin.component';
+
 
 
 
@@ -65,6 +74,14 @@ import { PasswordService } from './services/password.service';
     PaypalButtonComponent,
     OrderTrackPageComponent,
     ProfileComponent,
+    OrdersComponent,
+    AdminPageComponent,
+    AdminUsersComponent,
+    AdminFoodsComponent,
+    AdminAdminsComponent,
+    EditFoodComponent,
+    AddFoodComponent,
+    AddAdminComponent,
    
 
    

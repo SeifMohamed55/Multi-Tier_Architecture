@@ -1,0 +1,32 @@
+.orders-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .table-row {
+    display: flex;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .header {
+    font-weight: bold;
+  }
+  
+  .table-cell {
+    flex: 1;
+    padding: 8px;
+  }
+  
+  .table-cell:last-child {
+    flex: 3;
+  }
+  
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  li {
+    margin-bottom: 4px;
+  }

@@ -1,0 +1,23 @@
+<div class="add-food-container">
+<div>
+    <button (click)="addNewAdmin()">Add New Admin</button>
+  </div>
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Username</th>
+          <th>Email</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let admin of admins">
+          <td class="admin-detail">{{ admin.id }}</td>
+          <td class="admin-detail">{{ admin.name }}</td>
+          <td class="admin-detail">{{ admin.email }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

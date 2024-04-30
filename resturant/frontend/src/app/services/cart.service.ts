@@ -14,14 +14,19 @@ export class CartService {
 
   constructor() { }
 
-  addToCart(food: Food): void{
+  addToCart(food: Food): void {
     let cartItem = this.cart.items.find(item => item.food.id === food.id);
-    if(cartItem)
-      return;
-    else
+    if (cartItem) {
+     
+      cartItem.quantity++;
+      cartItem.totalPrice = cartItem.quantity * cartItem.price;
+    } else {
+      
       this.cart.items.push(new CartItem(food));
+    }
     this.setCartToLocalStorage();
-  }
+}
+
 
   removeFromCart(foodId: string):void{
     this.cart.items = this.cart.items.filter(item => item.food.id != foodId);

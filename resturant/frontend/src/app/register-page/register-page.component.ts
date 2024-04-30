@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../services/user.service';
-import { IUserRegister } from '../shared/interfaces/IUserRegister';
+import { IUserRegister, IUserRegisterWithoutConfirmPassword } from '../shared/interfaces/IUserRegister';
 
 @Component({
   selector: 'app-register-page',
@@ -47,12 +47,11 @@ export class RegisterPageComponent implements OnInit {
     if(this.registerForm.invalid) return;
 
     const fv= this.registerForm.controls;
-    const user :IUserRegister = {
+    const user :IUserRegisterWithoutConfirmPassword = {
       firstName: fv.firstName.value,
       lastName : fv.lastName.value ,
       email: fv.email.value,
       password: fv.password.value,
-      confirmPassword: fv.confirmPassword.value,
       address: fv.address.value
     };
 

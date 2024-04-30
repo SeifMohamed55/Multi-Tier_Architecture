@@ -3,6 +3,7 @@ package com.first.spring.loginmodule;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +18,7 @@ import com.first.spring.authmodule.AuthorityService;
 import com.first.spring.authmodule.Role;
 import com.first.spring.clientmodule.Client;
 import com.first.spring.clientmodule.ClientService;
+import com.first.spring.utilities.AESEncryptor;
 import com.first.spring.utilities.Loggers;
 
 @RequestMapping("/register")
@@ -31,7 +33,8 @@ public class RegisterController {
 	
 	private Logger logger = Loggers.getControllersLogger();
 	
-	
+	@Autowired
+	private AESEncryptor encryptor;
 
 	
 	@PostMapping("")
@@ -39,12 +42,20 @@ public class RegisterController {
 		
 		ObjectMapper mapper = new ObjectMapper();
         Client client;
+        String decryptedPassword;
         try {
         	client = mapper.readValue(entity, Client.class);
         	client.getAuthorities().add(authServ.getAuthorityById(Role.ROLE_USER));
+        	try {
+        		decryptedPassword = encryptor.decrypt(client.getPassword());
+        		client.setPassword(decryptedPassword);
+    		} catch (Exception e) {
+    			logger.error(e.getLocalizedMessage());
+    			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    		}
             var details = clientService.saveClient(client);
             
-            return ResponseEntity.ok("true");
+            return ResponseEntity.ok(new UserDTO(details));
         }catch(DatabindException ex) {
         	logger.error(ex.getLocalizedMessage());
         	
@@ -56,29 +67,6 @@ public class RegisterController {
         return ResponseEntity.badRequest().body("Failed To register");
     }
 	
-	@PostMapping("/admin")
-	@PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Object> registerAdmin(@RequestBody String entity) {
-		
-		ObjectMapper mapper = new ObjectMapper();
-        Client client;
-        try {
-        	client = mapper.readValue(entity, Client.class);
-        	client.getAuthorities().add(authServ.getAuthorityById(Role.ROLE_USER));
-        	client.getAuthorities().add(authServ.getAuthorityById(Role.ROLE_ADMIN));
-            var details = clientService.saveClient(client);
-            
-            return ResponseEntity.ok("true");
-        }catch(DatabindException ex) {
-        	logger.error(ex.getLocalizedMessage());
-        	
-        }catch(JsonProcessingException e){
-          logger.error(e.getMessage()); 
-        }catch(Exception ex) {
-        	logger.error(ex.getLocalizedMessage());
-        }
-        return ResponseEntity.badRequest().body("Bad Request");
-    }
 	
 	
 }

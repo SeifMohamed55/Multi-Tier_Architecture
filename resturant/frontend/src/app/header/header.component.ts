@@ -35,4 +35,9 @@ export class HeaderComponent implements OnInit {
   get isAuth(): boolean {
     return !!this.user?.token;
   }
+
+  get isAdmin(): boolean{
+    return this.userService.isUserAdmin();
+    
+  }
 }

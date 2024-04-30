@@ -1,11 +1,14 @@
 package com.first.spring.loginmodule;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import com.first.spring.authmodule.Authority;
 import com.first.spring.authmodule.Role;
+import com.first.spring.clientmodule.Client;
 import com.first.spring.foodmodule.Food;
 
 public class UserDTO implements Serializable {
@@ -37,7 +40,15 @@ public class UserDTO implements Serializable {
 		this.setName(client.getFullName());
 		this.id = client.getId();
 	}
-
+	
+	
+	public static List<UserDTO> getListUserDetailsToDTO(List<UserDetailsImpl> clients) {
+		var dtos = new ArrayList<UserDTO>();
+		for(UserDetailsImpl client : clients) {					
+			dtos.add(new UserDTO(client));
+		}
+		return dtos;
+	}
 	
 	public UserDTO() {
 		

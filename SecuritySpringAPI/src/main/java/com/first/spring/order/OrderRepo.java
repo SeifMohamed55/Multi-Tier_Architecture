@@ -10,6 +10,8 @@ import org.springframework.stereotype.Repository;
 public interface OrderRepo extends JpaRepository<Order, Long>{
 	
 	Optional<List<Order>> findByStatusAndClient_IdOrderByUpdatedAtDesc(OrderStatus status, Long clientId);
-	Optional<List<Order>> findByClient_Id(Long clientId);
+	Optional<List<Order>> findByClient_EmailOrderByCreatedAtDesc(String email);
+	
+	
 	
 }

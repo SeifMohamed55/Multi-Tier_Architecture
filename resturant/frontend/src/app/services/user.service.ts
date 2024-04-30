@@ -4,10 +4,14 @@ import { User } from '../shared/models/User';
 import { IUserLogin  } from '../shared/interfaces/IUserLogin';
 import { IUserRegisterWithoutConfirmPassword } from '../shared/interfaces/IUserRegister';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { USER_LOGIN_URL, USER_REGISTER_URL , USER_UPDATE_URL, USER_CHANGE_PASSWORD_URL, USER_LOGOUT_URL} from '../shared/models/constatns/urls';
+import { USER_LOGIN_URL, USER_REGISTER_URL , USER_UPDATE_URL, USER_CHANGE_PASSWORD_URL, USER_LOGOUT_URL, ADMIN_REGISTE_URL} from '../shared/models/constatns/urls';
 import { ToastrService } from 'ngx-toastr';
 import { EncryptionService } from './AES.service'
 import { CartService } from './cart.service';
+import { Router } from '@angular/router';
+import { IUpdatingUser } from '../shared/interfaces/IUpdatingUser';
+
+
 
 
 const USER_KEY = 'User';
@@ -19,7 +23,8 @@ export class UserService {
   public userObservable: Observable<User>;
   
 
-  constructor(private http: HttpClient, private toastrService:ToastrService, private encryptionService : EncryptionService, private cartService: CartService) {
+  constructor(private http: HttpClient,
+     private toastrService:ToastrService, private encryptionService : EncryptionService, private cartService: CartService, private router: Router) {
     this.userObservable = this.userSubject.asObservable();
   }
 
@@ -37,7 +42,7 @@ export class UserService {
           localStorage.setItem("token", user.token);
           this.userSubject.next(user);
           this.toastrService.success(
-            `Welcome to Foodmine ${user.name}!`,
+            `Welcome to RAZ ${user.name}!`,
             'Login Successful'
           )
         },
@@ -72,6 +77,9 @@ export class UserService {
     )
   }
 
+
+ 
+
  /* logout(): Observable<void> {
     return this.http.post<void>(USER_LOGOUT_URL, {}).pipe(
       tap(() => {
@@ -94,35 +102,56 @@ export class UserService {
       })
   }).subscribe({
       next: () => {
-        // Handle successful logout
         localStorage.removeItem(USER_KEY);
         this.cartService.clearCart();
         window.location.reload();
         this.toastrService.success('User Logged out Successfully');
+        this.router.navigate(["/"]);
+
+       
     },
       error: (errorResponse) => {
         localStorage.removeItem(USER_KEY);
         this.cartService.clearCart();
         window.location.reload();
         this.toastrService.error(errorResponse.error, 'Logout Failed');
-        // Handle specific errors (e.g., network errors)
       }
   });
   }
   
 
 
-  updateUser(user: User): Observable<User> {
-    return this.http.put<User>(USER_UPDATE_URL, user).pipe(
-      tap(updatedUser => {
-        this.setUserToLocalStorage(updatedUser);
-        this.userSubject.next(updatedUser);
+  updateUser(user: IUpdatingUser): Observable<User> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem("token")}`
       })
-    );
+    };
+    return this.http.post<User>(USER_UPDATE_URL, user, httpOptions).pipe(
+      tap({
+        next: (user) => {
+          this.setUserToLocalStorage(user);
+          this.userSubject.next(user);
+          this.toastrService.success('Profile updated successfully', 'Update Success');
+        },
+        error: (errorResponse) => {
+          this.toastrService.error('Failed to update profile', 'Update Failed');
+        }
+    }
+    ));
   }
 
-  changePassword(oldPassword: string, newPassword: string): Observable<void> {
-    return this.http.put<void>(USER_CHANGE_PASSWORD_URL, { oldPassword, newPassword });
+  changePassword(oldPassword: string, newPassword: string): Observable<boolean> {
+    oldPassword =  this.encryptionService.encrypt(oldPassword)
+    newPassword =  this.encryptionService.encrypt(oldPassword)
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem("token")}`
+      })
+    };
+    return this.http.post<boolean>(USER_CHANGE_PASSWORD_URL, { oldPassword: oldPassword, newPassword: newPassword}, httpOptions);
   }
 
  
@@ -136,4 +165,27 @@ export class UserService {
     if (userJson) return JSON.parse(userJson) as User;
     return new User();
   }
+
+
+  isUserAdmin(): boolean {
+    const user = this.currentUser;
+    let aa= false
+
+    if(!user || !user.roles) return false;
+
+    for (const role of user.roles) {
+      if(role.authority == "ROLE_ADMIN")
+        aa = true;
+    }
+    
+    return user && aa;
 }
+
+
+
+}
+  
+
+
+
+

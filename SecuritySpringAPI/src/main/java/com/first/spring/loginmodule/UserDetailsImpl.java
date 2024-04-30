@@ -1,7 +1,9 @@
 package com.first.spring.loginmodule;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -50,6 +52,8 @@ public class UserDetailsImpl implements UserDetails {
 		this.name = client.getFirstName() + " " + client.getLastName();
 		this.id = client.getId();
 	}
+	
+	
 
 	public Set<Food> getFavFood() {
 		return favFood;

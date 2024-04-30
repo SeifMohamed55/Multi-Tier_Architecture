@@ -28,7 +28,7 @@ public class OrderService {
 		return null;
 	}
 
-	public List<Order> getAllOrdersOrderedByDate() {
+	public List<Order> getAllOrdersOrderedByDate(String email) {
 		try {
 			var orders = orderRepo.findAll(Sort.by(Sort.Direction.ASC, "createdAt"));
 			return orders;
@@ -90,6 +90,14 @@ public class OrderService {
 			return newOrder.get();			
 		}
         return null;
+    }
+	
+	public List<Order> findOrdersByEmail(String email) {
+		var newOrder = orderRepo.findByClient_EmailOrderByCreatedAtDesc(email);
+		if(newOrder.isPresent()) {
+			return newOrder.get();			
+		}
+        return List.of();
     }
 
 }

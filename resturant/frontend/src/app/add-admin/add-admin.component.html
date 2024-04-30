@@ -1,0 +1,55 @@
+<div class="container">
+  <div class="details">
+    <app-title title="Register Admin"></app-title>
+    <form [formGroup]="registerForm" (ngSubmit)="submit()">
+      <text-input
+      [control]="fc.firstName"
+      [showErrorsWhen]="isSubmitted"
+      label="First Name">
+    </text-input>
+
+    <text-input
+    [control]="fc.lastName"
+    [showErrorsWhen]="isSubmitted"
+    label="Last Name">
+  </text-input>
+
+    <text-input
+    [control]="fc.email"
+    [showErrorsWhen]="isSubmitted"
+    label="Email"
+    type="email">
+  </text-input>
+
+
+  <text-input
+  [control]="fc.password"
+  [showErrorsWhen]="isSubmitted"
+  label="Password"
+  type="password">    
+</text-input>
+
+<text-input
+  [control]="fc.confirmPassword"
+  [showErrorsWhen]="isSubmitted"
+  label="Confirm Password"
+  type="password">    
+</text-input>
+
+<text-input
+[control]="fc.address"
+[showErrorsWhen]="isSubmitted"
+label="Address">
+</text-input>
+
+<div *ngIf="registerForm.get('confirmPassword')!.hasError('passwordsDontMatch')">
+  <small class="text-danger">Passwords don't match!</small>
+</div>
+
+<default-button text="Register"></default-button>
+
+
+
+    </form>
+  </div>
+</div>

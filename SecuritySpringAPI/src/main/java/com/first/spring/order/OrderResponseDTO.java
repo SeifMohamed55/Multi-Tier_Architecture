@@ -1,6 +1,7 @@
 package com.first.spring.order;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -43,7 +44,13 @@ public class OrderResponseDTO {
 		 this.setPaymentId(order.getPaymentId());
 	 }
 
-    
+    public static List<OrderResponseDTO> toOrderDTO(List<Order> orders){
+    	var dtos = new ArrayList<OrderResponseDTO>();
+    	for(Order order : orders) {
+    		dtos.add(new OrderResponseDTO(order));
+    	}
+    	return dtos;
+    }
 	 
 	 public long getId() {
 		return id;

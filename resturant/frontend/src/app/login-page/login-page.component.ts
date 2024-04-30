@@ -29,19 +29,20 @@ export class LoginPageComponent implements OnInit {
     return this.loginForm.controls;
   }
 
-  submit(){
+  submit() {
     this.isSubmitted = true;
-    if(this.loginForm.invalid) return;
+    if (this.loginForm.invalid) return;
 
-    this.userService.login({email: this.fc.email.value,password: this.fc.password.value}).subscribe(() =>{
-      this.router.navigateByUrl(this.returnUrl);
+    this.userService.login({ email: this.fc.email.value, password: this.fc.password.value }).subscribe(() => {
+      if (this.userService.isUserAdmin()) {
+        this.router.navigate(['/admin-page']);
+    } else {
+        this.router.navigate(['/']);
+    }
     });
-  }
+}
 
-  getKey(){
-    this.encServ.getData().subscribe(response =>{
-      console.log(response)
-    })
-  }
+
+ 
 
 }

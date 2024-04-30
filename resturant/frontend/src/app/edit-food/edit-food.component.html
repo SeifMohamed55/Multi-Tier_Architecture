@@ -1,0 +1,9 @@
+<div class="edit-food-container">
+    <h1>Edit Food Item</h1>
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" [(ngModel)]="food.name">
+    <label for="price">Price:</label>
+    <input type="number" id="price" name="price" [(ngModel)]="food.price">
+    <button (click)="updateFood()">Update Food</button>
+  </div>
+  

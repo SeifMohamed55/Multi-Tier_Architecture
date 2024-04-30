@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../services/user.service';
 import { User } from '../shared/models/User';
 import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
+import { IUpdatingUser } from '../shared/interfaces/IUpdatingUser';
 
 @Component({
   selector: 'app-profile',
@@ -17,7 +19,8 @@ export class ProfileComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private userService: UserService,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -36,22 +39,18 @@ export class ProfileComponent implements OnInit {
 
   updateProfile() {
     if (this.profileForm.valid) {
-      const updatedUser: User = {
-        ...this.user,
-        name: this.profileForm.get('name')!.value,
+      const fullName = this.profileForm.get('name')!.value
+      const nameParts = fullName.split(' ');
+      const updatedUser: IUpdatingUser = {
+        firstName: nameParts[0],
+        lastName: nameParts[1],
         email: this.profileForm.get('email')!.value,
         address: this.profileForm.get('address')!.value
       };
 
-      this.userService.updateUser(updatedUser).subscribe(
-        () => {
-          this.user = updatedUser;
-          this.toastrService.success('Profile updated successfully', 'Update Success');
-        },
-        (error) => {
-          this.toastrService.error('Failed to update profile', 'Update Failed');
-        }
-      );
+      this.userService.updateUser(updatedUser).subscribe((user)=>{
+        this.user = user
+      });
     }
   }
 

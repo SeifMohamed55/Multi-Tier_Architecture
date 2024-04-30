@@ -7,5 +7,5 @@ export class User{
     address!:string;
     token!:string;
     favFood!:[Food]
-    roles!:[string] // ROLE_ADMIN
+    roles!:[any] // ROLE_ADMIN
 }

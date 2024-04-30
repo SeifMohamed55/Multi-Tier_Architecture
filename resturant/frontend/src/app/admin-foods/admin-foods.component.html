@@ -1,0 +1,28 @@
+<div class="table-container">
+    <button class="add-new-food-btn" (click)="addNewFood()">Add New Food</button>
+  
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Price</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let food of foods">
+          <td>{{ food.id }}</td>
+          <td>{{ food.name }}</td>
+          <td>{{ food.price }}</td>
+          <td>
+            <button (click)="editFood(food.id)">Edit</button>
+            <button (click)="toggleHidden(food)">
+              {{ food.hidden ? 'Unhide' : 'Hide' }}
+          </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

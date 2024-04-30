@@ -1,0 +1,20 @@
+<div class="orders-table">
+    <div class="table-row header">
+      <div class="table-cell">Order ID</div>
+      <div class="table-cell">Order Date</div>
+      <div class="table-cell">Order Status</div>
+      <div class="table-cell">Total Price</div>
+    </div>
+
+    <div *ngFor="let order of orders" class="table-row">
+      <div class="table-cell">{{ order.id }}</div>
+      <div class="table-cell">{{ order.createdAt }}</div>
+      <div class="table-cell">{{ order.status }}</div>
+      <div class="table-cell">{{ order.totalPrice }}</div>
+     
+      <div class="table-cell">
+        <button (click)="navigateToOrderDetails(order.id)">View Details</button> 
+      </div>
+    </div>
+  </div>
+  
