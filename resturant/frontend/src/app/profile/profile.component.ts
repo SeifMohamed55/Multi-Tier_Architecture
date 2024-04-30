@@ -64,9 +64,10 @@ export class ProfileComponent implements OnInit {
         oldPassword,
         newPassword
       ).subscribe(
-        () => {
+        (resp) => {
           this.passwordForm.reset();
-          this.toastrService.success('Password changed successfully', 'Change Password Success');
+          if(resp)
+            this.toastrService.success('Password changed successfully', 'Change Password Success');
         },
         (error) => {
           this.toastrService.error('Failed to change password', 'Change Password Failed');

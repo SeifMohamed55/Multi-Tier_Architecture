@@ -132,6 +132,7 @@ export class UserService {
       tap({
         next: (user) => {
           this.setUserToLocalStorage(user);
+          localStorage.setItem("token", user.token);
           this.userSubject.next(user);
           this.toastrService.success('Profile updated successfully', 'Update Success');
         },
@@ -144,7 +145,7 @@ export class UserService {
 
   changePassword(oldPassword: string, newPassword: string): Observable<boolean> {
     oldPassword =  this.encryptionService.encrypt(oldPassword)
-    newPassword =  this.encryptionService.encrypt(oldPassword)
+    newPassword =  this.encryptionService.encrypt(newPassword)
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',

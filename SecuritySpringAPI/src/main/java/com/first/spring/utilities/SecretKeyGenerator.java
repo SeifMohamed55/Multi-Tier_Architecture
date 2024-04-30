@@ -8,8 +8,10 @@ public class SecretKeyGenerator {
 
 	public static SecretKey generateSecretKey() {
 	          
-        SecretKey secretKeyObj = Jwts.SIG.HS256.key().build();      	
+        SecretKey secretKeyObj = Jwts.SIG.HS256.key().build(); 
 		return secretKeyObj;
 		
 	}
+	
+	
 }

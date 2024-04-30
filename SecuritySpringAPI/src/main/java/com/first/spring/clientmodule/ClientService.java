@@ -59,6 +59,42 @@ public class ClientService {
 
 		return null;
 	}
+	
+	public boolean passwordMatch(String password, String savedPassword) {
+		if(encoder.matches(password, savedPassword)) 
+			return true;
+		
+		return false;
+	}
+	
+	public UserDetailsImpl saveClientWithoutChangingPass(Client client) {
+		if (client.hasNullField()) {
+			logger.error("Input Error: student fields cannot be null");
+			return null;
+		}
+		int retries = 0;
+		while (retries < Constants.MAX_RETRIES) {
+
+			try {
+				Client clientFinale = clientRepo.save(client);
+				return new UserDetailsImpl(clientFinale);
+
+			} catch (OptimisticLockingFailureException ex) {
+				logger.error(ex.getMessage());
+				retries++;
+
+			} catch (IllegalArgumentException ex) {
+				logger.error(ex.getMessage());
+				return null;
+
+			} catch (Exception ex) {
+				logger.error(ex.getMessage());
+				return null;
+			}
+		}
+
+		return null;
+	}
 
 	public boolean banClient(Client client) {
 		if (client == null) {

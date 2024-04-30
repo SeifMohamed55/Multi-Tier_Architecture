@@ -1,0 +1,1 @@
+2024-04-30 20:57:08,848 ERROR c.f.s.o.OrderController [http-nio-8080-exec-6] Cannot invoke "com.first.spring.order.Order.getUser()" because "order" is null

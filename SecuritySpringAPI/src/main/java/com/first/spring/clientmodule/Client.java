@@ -9,6 +9,7 @@ import com.first.spring.authmodule.Authority;
 import com.first.spring.foodmodule.Food;
 import com.first.spring.order.Order;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -51,7 +52,7 @@ public class Client {
 	@Version
 	private Integer version;
 	
-	@OneToMany(mappedBy = "client")
+	@OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties("client")
 	private List<Order> orders;
 

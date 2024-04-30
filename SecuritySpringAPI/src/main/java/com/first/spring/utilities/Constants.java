@@ -7,7 +7,7 @@ public class Constants {
 	
 	public static final int MAX_RETRIES = 3;
 	
-	// for PasswordBcrypt hashfunc
+	//for jwtToken
 	public static final SecretKey SECRET = SecretKeyGenerator.generateSecretKey();
 	
 	public static final String USER_CACHE_NAME = "userCache";

@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.first.spring.loginmodule.UserDTO;
@@ -18,6 +19,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @RequestMapping("/client")
+@RestController
 public class ClientController {
 
 	@Autowired
@@ -28,7 +30,7 @@ public class ClientController {
 	
 	@Autowired
 	private JwtTokenUtil jwtUtil;
-	
+		
 	private Logger logger = Loggers.getControllersLogger();
 	
 	@PostMapping("/changePassword")
@@ -40,7 +42,7 @@ public class ClientController {
 			String oldPass = encryptor.decrypt(entity.getOldPassword());
 			String newPass = encryptor.decrypt(entity.getNewPassword());
 			var client = clientServ.getClientByEmail(email);
-			if(client.getPassword() == oldPass)
+			if(clientServ.passwordMatch(oldPass, client.getPassword()))
 				client.setPassword(newPass);
 			else {
 				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -56,14 +58,15 @@ public class ClientController {
 	
 	@PostMapping("/updateUser")
 	public ResponseEntity<Object> updateUser(@RequestBody UserUpdateDTO entity) {
-		ObjectMapper mapper = new ObjectMapper();
 		try {
 			Client client = clientServ.getClientByEmail(entity.getEmail());
 			client.setEmail(entity.getEmail());
 			client.setAddress(entity.getAddress());
 			client.setFirstName(entity.getFirstName());
 			client.setLastName(entity.getLastName());
-			var savedClient = clientServ.saveClient(client);
+			var savedClient = clientServ.saveClientWithoutChangingPass(client);
+			var token = jwtUtil.generateAccessToken(savedClient);
+			savedClient.setToken(token);
 			return ResponseEntity.ok(new UserDTO(savedClient));
 			
 		} catch (Exception e) {
