@@ -44,4 +44,11 @@ form {
   display: flex;
   justify-content: center;
   align-items: center;
+  color: #007bff;
 }
+
+a{
+  color: #f9f9f9;
+}
+
+

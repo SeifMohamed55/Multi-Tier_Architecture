@@ -1,1 +1,1 @@
-2024-04-30 20:57:08,848 ERROR c.f.s.o.OrderController [http-nio-8080-exec-6] Cannot invoke "com.first.spring.order.Order.getUser()" because "order" is null
+2024-05-01 01:26:46,069 ERROR c.f.s.c.JwtAuthenticationFilter [http-nio-8080-exec-1] JWT signature does not match locally computed signature. JWT validity cannot be asserted and should not be trusted.

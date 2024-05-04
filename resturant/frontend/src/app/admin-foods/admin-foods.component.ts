@@ -39,23 +39,23 @@ export class AdminFoodsComponent implements OnInit {
 
   hideFood(food: Food): void {
     this.foodService.hideFood(food).subscribe(() => {
-      this.router.navigate(['/admin-foods'])
-       window.location.reload();
+      food.hidden = true;
     });
   }
 
-  unhideFood(food: Food): void{
-    this.foodService.unhideFood(food).subscribe(()=>{
-      this.router.navigate(['/admin-foods'])
-      window.location.reload();
+  unhideFood(food: Food): void {
+    this.foodService.unhideFood(food).subscribe(() => {
+      food.hidden = false;
     });
   }
 
-  toggleHidden(_t13: Food) {
-    if(_t13.hidden)
-      this.unhideFood(_t13);
-    else
-        this.hideFood(_t13);
+
+  toggleHidden(food: Food): void {
+    if (food.hidden) {
+      this.unhideFood(food);
+    } else {
+      this.hideFood(food);
+    }
   }
 
   addNewFood(): void {

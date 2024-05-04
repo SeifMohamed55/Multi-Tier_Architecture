@@ -1,6 +1,6 @@
 table{
     width: 100%;
-    border: 1px solid #eeeeee;
+    border: 1px solid #f9f9f9 ;
     margin-top: 1rem;
     border-radius: 5px;
     padding: 0.5rem 1rem;
@@ -9,7 +9,7 @@ table{
   h3{
     margin-top: 0.5rem;
     margin-left: 0.3rem;
-    color: grey;
+    color: #007bff;
   }
   
   a:hover{

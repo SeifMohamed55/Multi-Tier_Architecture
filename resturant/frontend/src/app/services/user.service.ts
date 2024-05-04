@@ -15,12 +15,16 @@ import { IUpdatingUser } from '../shared/interfaces/IUpdatingUser';
 
 
 const USER_KEY = 'User';
+
+
+
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
   public userSubject = new BehaviorSubject<User>(this.getUserFromLocalStorage());
   public userObservable: Observable<User>;
+  private static readonly USER_KEY = 'User';
   
 
   constructor(private http: HttpClient,
@@ -32,25 +36,60 @@ export class UserService {
     return this.userSubject.value;
   }
 
-  login(userLogin:IUserLogin):Observable<User>{
-    const encryptedPass = this.encryptionService.encrypt(userLogin.password)
-    userLogin.password = encryptedPass
+
+
+
+  //Local_Storage
+
+  // login(userLogin:IUserLogin):Observable<User>{
+  //   const encryptedPass = this.encryptionService.encrypt(userLogin.password)
+  //   userLogin.password = encryptedPass
+  //   return this.http.post<User>(USER_LOGIN_URL, userLogin).pipe(
+  //     tap({
+  //       next: (user) =>{        
+  //         this.setUserToLocalStorage(user);
+  //         localStorage.setItem("token", user.token);
+  //         this.userSubject.next(user);
+  //         this.toastrService.success(
+  //           `Welcome to RAZ ${user.name}!`,
+  //           'Login Successful'
+  //         )
+  //       },
+  //       error: (errorResponse) => {
+  //         this.toastrService.error(errorResponse.error, 'Login Failed');
+  //       }
+  //     })
+  //   );
+  // }
+
+   // Session
+  
+  login(userLogin: IUserLogin): Observable<User> {
+    const encryptedPass = this.encryptionService.encrypt(userLogin.password);
+    userLogin.password = encryptedPass;
     return this.http.post<User>(USER_LOGIN_URL, userLogin).pipe(
       tap({
-        next: (user) =>{        
-          this.setUserToLocalStorage(user);
-          localStorage.setItem("token", user.token);
+        next: (user) => {
+          this.setUserToSessionStorage(user);
           this.userSubject.next(user);
-          this.toastrService.success(
-            `Welcome to RAZ ${user.name}!`,
-            'Login Successful'
-          )
+          this.toastrService.success(`Welcome to RAZ ${user.name}!`, 'Login Successful');
         },
         error: (errorResponse) => {
           this.toastrService.error(errorResponse.error, 'Login Failed');
         }
       })
     );
+  }
+
+
+  private setUserToSessionStorage(user: User) {
+    sessionStorage.setItem(UserService.USER_KEY, JSON.stringify(user));
+  }
+
+  private getUserFromSessionStorage(): User {
+    const userJson = sessionStorage.getItem(UserService.USER_KEY);
+    if (userJson) return JSON.parse(userJson) as User;
+    return new User();
   }
 
 
@@ -65,7 +104,7 @@ export class UserService {
           this.setUserToLocalStorage(user);
           this.userSubject.next(user);
           this.toastrService.success(
-            `Welcome to the Foodmine ${user.name}`,
+            `Welcome to the RAZ ${user.name}`,
             'Register Successful'
           )
         },
@@ -121,6 +160,7 @@ export class UserService {
   
 
 
+
   updateUser(user: IUpdatingUser): Observable<User> {
     const httpOptions = {
       headers: new HttpHeaders({
@@ -143,6 +183,9 @@ export class UserService {
     ));
   }
 
+
+  
+
   changePassword(oldPassword: string, newPassword: string): Observable<boolean> {
     oldPassword =  this.encryptionService.encrypt(oldPassword)
     newPassword =  this.encryptionService.encrypt(newPassword)
@@ -154,6 +197,7 @@ export class UserService {
     };
     return this.http.post<boolean>(USER_CHANGE_PASSWORD_URL, { oldPassword: oldPassword, newPassword: newPassword}, httpOptions);
   }
+
 
  
 

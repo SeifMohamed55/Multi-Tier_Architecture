@@ -57,9 +57,11 @@ public class ClientController {
 	}
 	
 	@PostMapping("/updateUser")
-	public ResponseEntity<Object> updateUser(@RequestBody UserUpdateDTO entity) {
+	public ResponseEntity<Object> updateUser(@RequestBody UserUpdateDTO entity, HttpServletRequest request, HttpServletResponse response) {
+		String extractedToken = jwtUtil.extractToken(request);
+		String email = jwtUtil.extractSubject(extractedToken);
 		try {
-			Client client = clientServ.getClientByEmail(entity.getEmail());
+			Client client = clientServ.getClientByEmail(email);
 			client.setEmail(entity.getEmail());
 			client.setAddress(entity.getAddress());
 			client.setFirstName(entity.getFirstName());
