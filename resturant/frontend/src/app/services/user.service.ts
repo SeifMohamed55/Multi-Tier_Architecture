@@ -41,38 +41,19 @@ export class UserService {
 
   //Local_Storage
 
-  // login(userLogin:IUserLogin):Observable<User>{
-  //   const encryptedPass = this.encryptionService.encrypt(userLogin.password)
-  //   userLogin.password = encryptedPass
-  //   return this.http.post<User>(USER_LOGIN_URL, userLogin).pipe(
-  //     tap({
-  //       next: (user) =>{        
-  //         this.setUserToLocalStorage(user);
-  //         localStorage.setItem("token", user.token);
-  //         this.userSubject.next(user);
-  //         this.toastrService.success(
-  //           `Welcome to RAZ ${user.name}!`,
-  //           'Login Successful'
-  //         )
-  //       },
-  //       error: (errorResponse) => {
-  //         this.toastrService.error(errorResponse.error, 'Login Failed');
-  //       }
-  //     })
-  //   );
-  // }
-
-   // Session
-  
-  login(userLogin: IUserLogin): Observable<User> {
-    const encryptedPass = this.encryptionService.encrypt(userLogin.password);
-    userLogin.password = encryptedPass;
+  login(userLogin:IUserLogin):Observable<User>{
+    const encryptedPass = this.encryptionService.encrypt(userLogin.password)
+    userLogin.password = encryptedPass
     return this.http.post<User>(USER_LOGIN_URL, userLogin).pipe(
       tap({
-        next: (user) => {
-          this.setUserToSessionStorage(user);
+        next: (user) =>{        
+          this.setUserToLocalStorage(user);
+          localStorage.setItem("token", user.token);
           this.userSubject.next(user);
-          this.toastrService.success(`Welcome to RAZ ${user.name}!`, 'Login Successful');
+          this.toastrService.success(
+            `Welcome to RAZ ${user.name}!`,
+            'Login Successful'
+          )
         },
         error: (errorResponse) => {
           this.toastrService.error(errorResponse.error, 'Login Failed');
@@ -80,6 +61,25 @@ export class UserService {
       })
     );
   }
+
+   // Session
+  
+  // login(userLogin: IUserLogin): Observable<User> {
+  //   const encryptedPass = this.encryptionService.encrypt(userLogin.password);
+  //   userLogin.password = encryptedPass;
+  //   return this.http.post<User>(USER_LOGIN_URL, userLogin).pipe(
+  //     tap({
+  //       next: (user) => {
+  //         this.setUserToSessionStorage(user);
+  //         this.userSubject.next(user);
+  //         this.toastrService.success(`Welcome to RAZ ${user.name}!`, 'Login Successful');
+  //       },
+  //       error: (errorResponse) => {
+  //         this.toastrService.error(errorResponse.error, 'Login Failed');
+  //       }
+  //     })
+  //   );
+  // }
 
 
   private setUserToSessionStorage(user: User) {
@@ -101,7 +101,6 @@ export class UserService {
     return this.http.post<User>(USER_REGISTER_URL, userRegiser).pipe(
       tap({
         next: (user) => {
-          this.setUserToLocalStorage(user);
           this.userSubject.next(user);
           this.toastrService.success(
             `Welcome to the RAZ ${user.name}`,
