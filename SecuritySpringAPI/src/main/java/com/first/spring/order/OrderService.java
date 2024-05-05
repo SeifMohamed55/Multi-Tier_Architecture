@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.first.spring.utilities.Loggers;
 
 @Service
 public class OrderService {
@@ -16,14 +15,14 @@ public class OrderService {
 	@Autowired
 	private OrderRepo orderRepo;
 
-	private Logger logger = Loggers.getDBLogger();
+	//private Logger logger = Loggers.getDBLogger();
 
 	public Order saveOrder(Order order) {
 		try {
 			return orderRepo.save(order);
 
 		} catch (Exception ex) {
-			logger.error(ex.getLocalizedMessage());
+			//logger.error(ex.getLocalizedMessage());
 		}
 		return null;
 	}
@@ -33,7 +32,7 @@ public class OrderService {
 			var orders = orderRepo.findAll(Sort.by(Sort.Direction.ASC, "createdAt"));
 			return orders;
 		} catch (Exception ex) {
-			logger.error(ex.getLocalizedMessage());
+			//logger.error(ex.getLocalizedMessage());
 			return List.of();
 		}
 
@@ -45,7 +44,7 @@ public class OrderService {
 			orderRepo.save(order);
 			return true;
 		} catch (Exception ex) {
-			logger.error(ex.getLocalizedMessage());
+			//logger.error(ex.getLocalizedMessage());
 			return false;
 		}
 
@@ -57,7 +56,7 @@ public class OrderService {
 			orderRepo.save(order);
 			return true;
 		} catch (Exception ex) {
-			logger.error(ex.getLocalizedMessage());
+			//logger.error(ex.getLocalizedMessage());
 			return false;
 		}
 
@@ -70,7 +69,7 @@ public class OrderService {
 			return true;
 			
 		} catch (Exception ex) {
-			logger.error(ex.getLocalizedMessage());
+			//logger.error(ex.getLocalizedMessage());
 			return false;
 		}
 

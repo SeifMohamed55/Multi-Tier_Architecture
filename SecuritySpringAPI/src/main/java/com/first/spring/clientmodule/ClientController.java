@@ -13,7 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.first.spring.loginmodule.UserDTO;
 import com.first.spring.utilities.AESEncryptor;
 import com.first.spring.utilities.JwtTokenUtil;
-import com.first.spring.utilities.Loggers;
+//import com.first.spring.utilities.Loggers;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -31,7 +31,7 @@ public class ClientController {
 	@Autowired
 	private JwtTokenUtil jwtUtil;
 		
-	private Logger logger = Loggers.getControllersLogger();
+	//private Logger logger = Loggers.getControllersLogger();
 	
 	@PostMapping("/changePassword")
 	public ResponseEntity<Object> changePassword(@RequestBody PasswordDTO entity, HttpServletRequest request, HttpServletResponse response) {
@@ -51,7 +51,7 @@ public class ClientController {
 			return ResponseEntity.ok(true);
 
 		} catch (Exception e) {
-			logger.error(e.getLocalizedMessage());
+			//logger.error(e.getLocalizedMessage());
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
 	}
@@ -72,7 +72,7 @@ public class ClientController {
 			return ResponseEntity.ok(new UserDTO(savedClient));
 			
 		} catch (Exception e) {
-			logger.error(e.getLocalizedMessage());
+			//logger.error(e.getLocalizedMessage());
 		}
 		return ResponseEntity.badRequest().build();
 		

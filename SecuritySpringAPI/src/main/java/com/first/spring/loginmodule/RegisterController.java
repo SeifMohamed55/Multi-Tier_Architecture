@@ -19,7 +19,7 @@ import com.first.spring.authmodule.Role;
 import com.first.spring.clientmodule.Client;
 import com.first.spring.clientmodule.ClientService;
 import com.first.spring.utilities.AESEncryptor;
-import com.first.spring.utilities.Loggers;
+//import com.first.spring.utilities.Loggers;
 
 @RequestMapping("/register")
 @RestController
@@ -31,7 +31,7 @@ public class RegisterController {
 	@Autowired
 	private AuthorityService authServ;
 	
-	private Logger logger = Loggers.getControllersLogger();
+	//private Logger logger = Loggers.getControllersLogger();
 	
 	@Autowired
 	private AESEncryptor encryptor;
@@ -50,19 +50,19 @@ public class RegisterController {
         		decryptedPassword = encryptor.decrypt(client.getPassword());
         		client.setPassword(decryptedPassword);
     		} catch (Exception e) {
-    			logger.error(e.getLocalizedMessage());
-    			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    			//logger.error(e.getLocalizedMessage());
+    			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(entity);
     		}
             var details = clientService.saveClient(client);
             
             return ResponseEntity.ok(new UserDTO(details));
         }catch(DatabindException ex) {
-        	logger.error(ex.getLocalizedMessage());
+        	//logger.error(ex.getLocalizedMessage());
         	
         }catch(JsonProcessingException e){
-          logger.error(e.getMessage()); 
+          //logger.error(e.getMessage()); 
         }catch(Exception ex) {
-        	logger.error(ex.getLocalizedMessage());
+        	//logger.error(ex.getLocalizedMessage());
         }
         return ResponseEntity.badRequest().body("Failed To register");
     }

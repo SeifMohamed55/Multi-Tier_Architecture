@@ -14,7 +14,7 @@ import com.first.spring.clientmodule.ClientRepository;
 import com.first.spring.utilities.CacheService;
 import com.first.spring.utilities.Constants;
 import com.first.spring.utilities.JwtTokenUtil;
-import com.first.spring.utilities.Loggers;
+//import com.first.spring.utilities.Loggers;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -33,7 +33,7 @@ public class LoginService implements UserDetailsService  {
 	@Autowired
 	private CacheService cacheService;
 	
-	private Logger logger = Loggers.getDBLogger();
+	//private Logger logger = Loggers.getDBLogger();
 	
 	public UserDetailsImpl logIn(String email, String password) {
 		Client client = null;
@@ -43,7 +43,7 @@ public class LoginService implements UserDetailsService  {
 				client = clientRepo.findByEmail(email);
 				break;
 			} catch (OptimisticLockingFailureException ex) {
-				logger.error(ex.getMessage());
+				//logger.error(ex.getMessage());
 				retries++;
 			}
 		}
@@ -65,7 +65,7 @@ public class LoginService implements UserDetailsService  {
 		if(student == null) return false;
 		
 		if (student.hasNullField()) {
-			logger.error("Input Error: student fields cannot be null");
+			//logger.error("Input Error: student fields cannot be null");
 			return false;
 		}
 		int retries = 0;
@@ -74,19 +74,19 @@ public class LoginService implements UserDetailsService  {
 			try {
 				student.setPassword(encoder.encode(student.getPassword()));
 				var savedEntity = clientRepo.save(student);
-				logger.info("student: " + savedEntity.toString());
+				//logger.info("student: " + savedEntity.toString());
 				return true;
 
 			} catch (OptimisticLockingFailureException ex) {
-				logger.error(ex.getMessage());
+				//logger.error(ex.getMessage());
 				retries++;
 
 			} catch (IllegalArgumentException ex) {
-				logger.error(ex.getMessage());
+				//logger.error(ex.getMessage());
 				return false;
 
 			} catch (Exception ex) {
-				logger.error(ex.getMessage());
+				//logger.error(ex.getMessage());
 				return false;
 			}
 		}

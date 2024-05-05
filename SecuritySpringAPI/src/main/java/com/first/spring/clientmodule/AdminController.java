@@ -24,19 +24,18 @@ import com.first.spring.authmodule.Role;
 import com.first.spring.foodmodule.Food;
 import com.first.spring.foodmodule.FoodService;
 import com.first.spring.loginmodule.UserDTO;
-import com.first.spring.loginmodule.UserDetailsImpl;
 import com.first.spring.utilities.AESEncryptor;
 import com.first.spring.utilities.CacheService;
-import com.first.spring.utilities.Loggers;
+//import com.first.spring.utilities.Loggers;
 
 
 @RestController
 @RequestMapping("/admin")
 public class AdminController {
-	Logger logger =  Loggers.getControllersLogger();
+	//Logger logger =  Loggers.getControllersLogger();
 	
     @Autowired
-    ClientService clientService;
+    private ClientService clientService;
     
     @Autowired
 	private CacheService cacheService;
@@ -82,19 +81,19 @@ public class AdminController {
         		decryptedPassword = encryptor.decrypt(client.getPassword());
         		client.setPassword(decryptedPassword);
     		} catch (Exception e) {
-    			logger.error(e.getLocalizedMessage());
-    			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    			//logger.error(e.getLocalizedMessage());
+    			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(entity);
     		}
             var details = clientService.saveClient(client);
             
             return ResponseEntity.ok(new UserDTO(details));
         }catch(DatabindException ex) {
-        	logger.error(ex.getLocalizedMessage());
+        	//logger.error(ex.getLocalizedMessage());
         	
         }catch(JsonProcessingException e){
-          logger.error(e.getMessage()); 
+          //logger.error(e.getMessage()); 
         }catch(Exception ex) {
-        	logger.error(ex.getLocalizedMessage());
+        	//logger.error(ex.getLocalizedMessage());
         }
         return ResponseEntity.badRequest().body("Bad Request");
     }
@@ -108,7 +107,7 @@ public class AdminController {
 			var deleted = clientService.deleteClientById(id);
 			return ResponseEntity.ok(deleted);
 		}catch(Exception ex) {
-			logger.error(ex.getLocalizedMessage());
+			//logger.error(ex.getLocalizedMessage());
 			return ResponseEntity.badRequest().build();
 		}
 	}
@@ -140,7 +139,7 @@ public class AdminController {
         	return student;
 		
     	}catch(NumberFormatException ex) {
-    		logger.error(ex.getLocalizedMessage());
+    		//logger.error(ex.getLocalizedMessage());
     	}
     	Client student = clientService.getClientByEmail(id);
 		return student;
@@ -158,7 +157,7 @@ public class AdminController {
 			var details = foodService.save(food);
 			return ResponseEntity.ok(details);
 		} catch (Exception ex) {
-			logger.error(ex.getLocalizedMessage());
+			//logger.error(ex.getLocalizedMessage());
 			return ResponseEntity.badRequest().body("Food Structure is unaccepted");
 		}
 	}
@@ -175,7 +174,7 @@ public class AdminController {
 			foodService.save(food);
 			return ResponseEntity.ok(true);
 		} catch (Exception ex) {
-			logger.error(ex.getLocalizedMessage());
+			//logger.error(ex.getLocalizedMessage());
 			return ResponseEntity.badRequest().body("Food Structure is unaccepted");
 		}
 	}
@@ -192,7 +191,7 @@ public class AdminController {
 			foodService.save(food);
 			return ResponseEntity.ok(true);
 		} catch (Exception ex) {
-			logger.error(ex.getLocalizedMessage());
+			//logger.error(ex.getLocalizedMessage());
 			return ResponseEntity.badRequest().body("Food Structure is unaccepted");
 		}
 	}
@@ -207,7 +206,7 @@ public class AdminController {
 			if(food.getPrice() > 0)
 				return ResponseEntity.ok(foodService.save(food));
 		}catch(Exception ex) {
-			logger.error(ex.getMessage());
+			//logger.error(ex.getMessage());
 		}
 		
 		return ResponseEntity.badRequest().body("Price is negative");

@@ -13,7 +13,6 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
-import org.slf4j.Logger;
 import org.springframework.core.env.Environment;
 
 public class AESEncryptor {
@@ -24,7 +23,7 @@ public class AESEncryptor {
 
 	private IvParameterSpec iv;
 	
-	private Logger logger = Loggers.getControllersLogger();
+	//private Logger logger = Loggers.getControllersLogger();
 
 	public AESEncryptor(Environment env) {
 //		try {
@@ -72,7 +71,7 @@ public class AESEncryptor {
 
 		// Generate the secret key
 		SecretKey secretKey = keyGen.generateKey();
-		logger.warn("AES_SECRET_KEY: " + toHex(secretKey.getEncoded()));
+		//logger.warn("AES_SECRET_KEY: " + toHex(secretKey.getEncoded()));
 
 		return secretKey;
 	}
@@ -80,7 +79,7 @@ public class AESEncryptor {
 	private IvParameterSpec generateIv() {
 		byte[] iv = new byte[16];
 		new SecureRandom().nextBytes(iv);
-		logger.warn("AES_IV: " + toHex(iv));
+		//logger.warn("AES_IV: " + toHex(iv));
 		return new IvParameterSpec(iv);
 	}
 

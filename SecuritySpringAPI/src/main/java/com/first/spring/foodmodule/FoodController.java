@@ -5,18 +5,13 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.first.spring.utilities.Loggers;
+//import com.first.spring.utilities.Loggers;
 
 @RestController
 @RequestMapping("/api/food")
@@ -25,7 +20,7 @@ public class FoodController {
 	@Autowired
 	private FoodService foodService;
 	
-	private Logger logger = Loggers.getControllersLogger();
+	//private Logger logger = Loggers.getControllersLogger();
 	
 
 	@GetMapping("")
@@ -90,7 +85,7 @@ public class FoodController {
 			var food = foodService.findById(id);
 			return ResponseEntity.ok(food);
 		} catch (Exception ex) {
-			logger.error(ex.getLocalizedMessage());
+			//logger.error(ex.getLocalizedMessage());
 			return ResponseEntity.badRequest().body("Id is unacceptable");
 		}
 

@@ -37,20 +37,60 @@
                 <TimeBasedTriggeringPolicy />
             </Policies>
         </RollingFile>
+		
+		<RollingFile name="loginLog"
+            fileName="./Logs/log4j2Login.log"
+            filePattern="./logs/$${date:yyyy-MM}/log4j2-%d{-dd-MMMM-yyyy}-%i.log.gz">
+            <PatternLayout>
+                <pattern>%d %p %C{1.} [%t] %m%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <!-- rollover on startup, daily and when the file reaches 
+                    10 MegaBytes -->
+                <OnStartupTriggeringPolicy />
+                <SizeBasedTriggeringPolicy
+                    size="10 MB" />
+                <TimeBasedTriggeringPolicy />
+            </Policies>
+        </RollingFile>
+		
+		<RollingFile name="registerLog"
+            fileName="./Logs/log4j2RegisterLog.log"
+            filePattern="./logs/$${date:yyyy-MM}/log4j2-%d{-dd-MMMM-yyyy}-%i.log.gz">
+            <PatternLayout>
+                <pattern>%d %p %C{1.} [%t] %m%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <!-- rollover on startup, daily and when the file reaches 
+                    10 MegaBytes -->
+                <OnStartupTriggeringPolicy />
+                <SizeBasedTriggeringPolicy
+                    size="10 MB" />
+                <TimeBasedTriggeringPolicy />
+            </Policies>
+        </RollingFile>
     </Appenders>
 
-<Loggers>
-	
-	<Root level="info">
-        <AppenderRef ref="Console" />
-    </Root>
+	<Loggers>
+		
+		<Root level="info">
+			<AppenderRef ref="Console" />
+		</Root>
 
-    <Logger name="controller" level="warn">
-        <AppenderRef ref="Controllerslog" />
-    </Logger>
+		<Logger name="controller" level="info">
+			<AppenderRef ref="Controllerslog" />
+		</Logger>
 
-    <Logger name="database" level="warn">
-        <AppenderRef ref="dblog" />
-    </Logger>
-</Loggers>
+		<Logger name="database" level="info">
+			<AppenderRef ref="dblog" />
+		</Logger>
+		
+		<Logger name="login" level="info">
+			<AppenderRef ref="loginLog" />
+		</Logger>
+		
+		<Logger name="register" level="info">
+			<AppenderRef ref="registerLog" />
+		</Logger>
+	</Loggers>
 </Configuration>

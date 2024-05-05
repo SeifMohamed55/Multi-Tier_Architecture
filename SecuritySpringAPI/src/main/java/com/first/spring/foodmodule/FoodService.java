@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.first.spring.utilities.Loggers;
+//import com.first.spring.utilities.Loggers;
 
 @Service
 public class FoodService {
@@ -16,7 +16,7 @@ public class FoodService {
 	@Autowired
 	private FoodRepository foodRepo;
 
-	private Logger logger = Loggers.getDBLogger();
+	//private Logger logger = Loggers.getDBLogger();
 
 	public List<Food> findByNameContaining(String name) {
 
@@ -78,7 +78,7 @@ public class FoodService {
 			var foods = foodRepo.findAll(Sort.by(Sort.Direction.ASC, "name"));
 			return foods;
 		}catch(Exception ex) {
-			logger.error(ex.getLocalizedMessage());
+			//logger.error(ex.getLocalizedMessage());
 			return List.of();
 		}
 		 
@@ -89,7 +89,7 @@ public class FoodService {
 			var foods = foodRepo.findById(id);
 			return foods.get();
 		}catch(Exception ex) {
-			logger.error(ex.getLocalizedMessage());
+			//logger.error(ex.getLocalizedMessage());
 			return null;
 		}
 		 
@@ -101,7 +101,7 @@ public class FoodService {
 			var foodSaved = foodRepo.save(food);
 			return foodSaved;
 		}catch(Exception ex) {
-			logger.error(ex.getLocalizedMessage());
+			//logger.error(ex.getLocalizedMessage());
 			return null;
 		}
 		 

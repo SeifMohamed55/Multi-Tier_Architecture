@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.first.spring.utilities.AESEncryptor;
 import com.first.spring.utilities.CacheService;
 import com.first.spring.utilities.JwtTokenUtil;
-import com.first.spring.utilities.Loggers;
+//import com.first.spring.utilities.Loggers;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -39,7 +39,7 @@ public class LoginController {
 	private AESEncryptor encryptor;
 	
 	
-	private Logger logger = Loggers.getControllersLogger();
+	//private Logger logger = Loggers.getControllersLogger();
 	
 
 	@PostMapping("/login")
@@ -50,15 +50,15 @@ public class LoginController {
 		try {
 			password = encryptor.decrypt(password);
 		} catch (Exception e) {
-			logger.error(e.getLocalizedMessage());
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+			//logger.error(e.getLocalizedMessage());
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
 		}
 		if (email == null || password == null)
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
 
 		UserDetailsImpl userDetails = loginService.logIn(email, password);
 		if (userDetails == null) {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
 		}
 		
 		var userDto = new UserDTO(userDetails);

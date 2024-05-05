@@ -14,7 +14,7 @@ public class CacheService {
 	@Autowired
 	private CacheManager cacheManager;
 	
-	private Logger log  = Loggers.getControllersLogger();
+	//private Logger log  = Loggers.getControllersLogger();
 	
 	public void evictUserFromCache(String email) {
 		Cache cache = cacheManager.getCache(Constants.USER_CACHE_NAME);
@@ -34,10 +34,10 @@ public class CacheService {
 		Cache cache = cacheManager.getCache(Constants.USER_CACHE_NAME);
 	    Cache.ValueWrapper wrapper = cache.get(email);
 	    if (wrapper != null) {
-	    	log.error("value returned");
+	    	//log.error("value returned");
 	      return (UserDetailsImpl) wrapper.get();
 	    }
-	    log.error("cached user is null");
+	    //log.error("cached user is null");
 	    return null;  // User not found in cache
 	}
 	

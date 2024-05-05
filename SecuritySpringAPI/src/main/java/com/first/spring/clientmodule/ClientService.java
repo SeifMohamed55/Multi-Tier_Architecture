@@ -15,7 +15,7 @@ import com.first.spring.authmodule.Authority;
 import com.first.spring.authmodule.Role;
 import com.first.spring.loginmodule.UserDetailsImpl;
 import com.first.spring.utilities.Constants;
-import com.first.spring.utilities.Loggers;
+//import com.first.spring.utilities.Loggers;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -28,11 +28,11 @@ public class ClientService {
 	@Autowired
 	private ClientRepository clientRepo;
 
-	private Logger logger = Loggers.getDBLogger();
+	//private Logger logger = Loggers.getDBLogger();
 
 	public UserDetailsImpl saveClient(Client client) {
 		if (client.hasNullField()) {
-			logger.error("Input Error: student fields cannot be null");
+			//logger.error("Input Error: student fields cannot be null");
 			return null;
 		}
 		int retries = 0;
@@ -44,15 +44,15 @@ public class ClientService {
 				return new UserDetailsImpl(clientFinale);
 
 			} catch (OptimisticLockingFailureException ex) {
-				logger.error(ex.getMessage());
+				//logger.error(ex.getMessage());
 				retries++;
 
 			} catch (IllegalArgumentException ex) {
-				logger.error(ex.getMessage());
+				//logger.error(ex.getMessage());
 				return null;
 
 			} catch (Exception ex) {
-				logger.error(ex.getMessage());
+				//logger.error(ex.getMessage());
 				return null;
 			}
 		}
@@ -69,7 +69,7 @@ public class ClientService {
 	
 	public UserDetailsImpl saveClientWithoutChangingPass(Client client) {
 		if (client.hasNullField()) {
-			logger.error("Input Error: student fields cannot be null");
+			//logger.error("Input Error: student fields cannot be null");
 			return null;
 		}
 		int retries = 0;
@@ -80,15 +80,15 @@ public class ClientService {
 				return new UserDetailsImpl(clientFinale);
 
 			} catch (OptimisticLockingFailureException ex) {
-				logger.error(ex.getMessage());
+				//logger.error(ex.getMessage());
 				retries++;
 
 			} catch (IllegalArgumentException ex) {
-				logger.error(ex.getMessage());
+				//logger.error(ex.getMessage());
 				return null;
 
 			} catch (Exception ex) {
-				logger.error(ex.getMessage());
+				//logger.error(ex.getMessage());
 				return null;
 			}
 		}
@@ -98,7 +98,7 @@ public class ClientService {
 
 	public boolean banClient(Client client) {
 		if (client == null) {
-			logger.error("Couldn't delete student Null argument exception");
+			//logger.error("Couldn't delete student Null argument exception");
 			return false;
 		}
 		int retries = 0;
@@ -110,11 +110,11 @@ public class ClientService {
 				return true;
 
 			} catch (OptimisticLockingFailureException ex) {
-				logger.error(ex.getMessage());
+				//logger.error(ex.getMessage());
 				retries++;
 
 			} catch (IllegalArgumentException ex) {
-				logger.error(ex.getMessage());
+				//logger.error(ex.getMessage());
 				return false;
 			}
 		}
@@ -123,7 +123,7 @@ public class ClientService {
 
 	public boolean unbanClient(Client client) {
 		if (client == null) {
-			logger.error("Couldn't delete student Null argument exception");
+			//logger.error("Couldn't delete student Null argument exception");
 			return false;
 		}
 		int retries = 0;
@@ -135,11 +135,11 @@ public class ClientService {
 				return true;
 
 			} catch (OptimisticLockingFailureException ex) {
-				logger.error(ex.getMessage());
+				//logger.error(ex.getMessage());
 				retries++;
 
 			} catch (IllegalArgumentException ex) {
-				logger.error(ex.getMessage());
+				//logger.error(ex.getMessage());
 				return false;
 			}
 		}
@@ -177,7 +177,7 @@ public class ClientService {
 		try {
 			client = clientRepo.findByEmail(email);
 		} catch (EntityNotFoundException ex) {
-			logger.error(ex.getLocalizedMessage());
+			//logger.error(ex.getLocalizedMessage());
 			return null;
 		}
 		return client;
@@ -188,10 +188,10 @@ public class ClientService {
 		try {
 			client = clientRepo.findById(id).get();
 		} catch (EntityNotFoundException ex) {
-			logger.error(ex.getLocalizedMessage());
+			//logger.error(ex.getLocalizedMessage());
 			return null;
 		} catch (NoSuchElementException ex) {
-			logger.error(ex.getLocalizedMessage());
+			//logger.error(ex.getLocalizedMessage());
 			return null;
 		}
 		return client;

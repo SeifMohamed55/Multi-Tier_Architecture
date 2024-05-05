@@ -21,7 +21,7 @@ import com.first.spring.clientmodule.Client;
 import com.first.spring.clientmodule.ClientService;
 import com.first.spring.loginmodule.UserDTO;
 import com.first.spring.utilities.JwtTokenUtil;
-import com.first.spring.utilities.Loggers;
+//import com.first.spring.utilities.Loggers;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -36,7 +36,7 @@ public class OrderController {
 	@Autowired
 	private OrderService orderService;
 
-	private Logger logger = Loggers.getControllersLogger();
+	//private Logger logger = Loggers.getControllersLogger();
 
 	@Autowired
 	private JwtTokenUtil jwtUtil;
@@ -62,7 +62,7 @@ public class OrderController {
 			OrderResponseDTO response = new OrderResponseDTO(order);
 			return ResponseEntity.ok(response);
 		} catch (Exception ex) {
-			logger.error(ex.getLocalizedMessage());
+			//logger.error(ex.getLocalizedMessage());
 			return ResponseEntity.badRequest().body("Order Structure is unaccepted");
 		}
 	}
@@ -89,7 +89,7 @@ public class OrderController {
 			try {
 				id = Long.parseLong(orderId);
 			} catch (Exception ex) {
-				logger.error(ex.getLocalizedMessage());
+				//logger.error(ex.getLocalizedMessage());
 				return ResponseEntity.notFound().build();
 			}
 			Order order = orderService.findOrderById(id);
@@ -99,7 +99,7 @@ public class OrderController {
 			return ResponseEntity.ok(new OrderResponseDTO(order));
 
 		} catch (Exception ex) {
-			logger.error(ex.getLocalizedMessage());
+			//logger.error(ex.getLocalizedMessage());
 			return ResponseEntity.notFound().build();
 		}
 
@@ -129,7 +129,7 @@ public class OrderController {
 			var details = orderService.saveOrder(order);
 			return ResponseEntity.ok(details.getId());
 		} catch (Exception ex) {
-			logger.error(ex.getLocalizedMessage());
+			//logger.error(ex.getLocalizedMessage());
 			return ResponseEntity.badRequest().body("Order Structure is unaccepted");
 		}
 	}
@@ -144,7 +144,7 @@ public class OrderController {
 			var details = orderService.saveOrder(order);
 			return ResponseEntity.ok(details);
 		} catch (Exception ex) {
-			logger.error(ex.getLocalizedMessage());
+			//logger.error(ex.getLocalizedMessage());
 			return ResponseEntity.badRequest().body("Order Structure is unaccepted");
 		}
 	}

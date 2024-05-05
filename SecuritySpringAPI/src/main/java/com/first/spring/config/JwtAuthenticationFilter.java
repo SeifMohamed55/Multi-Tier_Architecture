@@ -17,7 +17,6 @@ import com.first.spring.authmodule.Role;
 import com.first.spring.utilities.CacheService;
 import com.first.spring.utilities.Constants;
 import com.first.spring.utilities.JwtTokenUtil;
-import com.first.spring.utilities.Loggers;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
@@ -28,7 +27,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-	private Logger logger = Loggers.getControllersLogger();
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)

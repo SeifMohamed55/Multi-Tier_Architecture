@@ -1,0 +1,12 @@
+2024-05-05 19:47:03,866 INFO c.f.s.a.LoggingRegister_LoginAspect [http-nio-8080-exec-2] User Logged Successfully:
+id: 1
+name: Seif Mohamed
+email: seif@gmail.com
+
+
+2024-05-05 19:52:44,584 INFO c.f.s.a.LoggingRegister_LoginAspect [http-nio-8080-exec-7] User Logged Successfully:
+id: 1
+name: Seif Mohamed
+email: seif@gmail.com
+
+

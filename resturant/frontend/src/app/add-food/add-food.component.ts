@@ -21,7 +21,7 @@ export class AddFoodComponent {
       imageUrl: ['assets/not_found.jpg'],
       origins: [[]],
       cookTime: ['', Validators.required],
-      tags: [[]],
+      tags: ['', Validators.required],
       hidden: [false]
     });
   }
@@ -32,7 +32,8 @@ export class AddFoodComponent {
       return;
     }
 
-    const newFood: Food = this.newFoodForm.value;
+     this.newFoodForm.value.tags = [this.newFoodForm.value.tags];
+     let newFood: Food = this.newFoodForm.value
     this.foodService.addNewFood(newFood).subscribe(
       () => {
         this.toastr.success('Food item added successfully.', 'Success');
