@@ -155,6 +155,8 @@ public class AdminController {
 		try {
 			food = mapper.readValue(map, Food.class);
 			var details = foodService.save(food);
+			if(details == null) 
+				return ResponseEntity.badRequest().body("price is less than or equal 0");
 			return ResponseEntity.ok(details);
 		} catch (Exception ex) {
 			//logger.error(ex.getLocalizedMessage());

@@ -98,6 +98,7 @@ public class FoodService {
 	
 	public Food save(Food food){
 		try {
+			if(food.getPrice() <=0) throw new IllegalArgumentException("price can't be less than 1");
 			var foodSaved = foodRepo.save(food);
 			return foodSaved;
 		}catch(Exception ex) {
