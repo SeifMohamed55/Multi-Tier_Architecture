@@ -1,0 +1,57 @@
+
+services:
+  angular:
+    build:
+      context: ./resturant/frontend
+      dockerfile: Dockerfile
+    ports:
+      - "4200:4200"
+    depends_on:
+      - spring-boot
+    networks:
+      - my-network
+
+  microservice:
+    build:
+        context: ./FoodMicroservice
+        dockerfile: Dockerfile
+    ports:
+        - "8081:8081"
+    depends_on:
+        - sql-server
+    networks:
+      - my-network
+    
+  spring-boot:
+    build:
+      context: ./SecuritySpringAPI
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - sql-server
+    networks:
+      - my-network
+
+  
+
+  sql-server:
+    image: mcr.microsoft.com/mssql/server:latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=test@123
+      - ENV MSSQL_PID=Developer
+      - ENV MSSQL_USER=SpringBootAdmin
+      - ENV MSSQL_PASSWORD=spring
+    ports:
+      - "1433:1433"
+    networks:
+      - my-network
+    volumes:
+      - ../DockerVolume:/var/opt/mssql/data  # Mount the volume
+  
+
+  
+networks:
+   my-network:
+     driver: bridge
