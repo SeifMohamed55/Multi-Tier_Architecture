@@ -13,6 +13,9 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.first.spring.loginmodule.LoginService;
+import com.first.spring.refreshtoken.RefreshTokenService;
+import com.first.spring.utilities.CacheService;
+import com.first.spring.utilities.JwtTokenUtil;
 
 @Configuration
 @EnableWebSecurity
@@ -22,7 +25,12 @@ public class SecurityConfig  {
 	
 	@Autowired
 	private LoginService loginService;
-		
+	
+	@Autowired
+	private JwtTokenUtil jwtUtil;
+	
+	@Autowired
+	private CacheService cacheService;
 	
 	// Adding Let's Encrypt certificate instead of self signed cert OR Cloudflare free
 	// csrf importance
@@ -39,7 +47,7 @@ public class SecurityConfig  {
 						.requestMatchers("/admin/**").hasRole("ADMIN")
 						.anyRequest().authenticated())
 				.userDetailsService(loginService)
-				.addFilterBefore(new JwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+				.addFilterBefore(new JwtAuthenticationFilter(jwtUtil, cacheService), UsernamePasswordAuthenticationFilter.class)
 				.sessionManagement(ses -> ses.sessionCreationPolicy(SessionCreationPolicy.STATELESS))				
 				.formLogin(auth -> auth.disable())
 				.logout(log -> log.disable());

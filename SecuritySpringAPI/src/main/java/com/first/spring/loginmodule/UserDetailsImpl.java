@@ -14,6 +14,7 @@ import com.first.spring.authmodule.Authority;
 import com.first.spring.authmodule.Role;
 import com.first.spring.clientmodule.Client;
 import com.first.spring.foodmodule.Food;
+import com.first.spring.refreshtoken.RefreshToken;
 
 public class UserDetailsImpl implements UserDetails {
 
@@ -32,6 +33,8 @@ public class UserDetailsImpl implements UserDetails {
 	private Set<Role> authorities = new HashSet<Role>();
 
 	private String token;
+	
+	private String refreshToken;
 
 	@JsonIgnore
 	private boolean isTokenExpired = false;
@@ -51,6 +54,7 @@ public class UserDetailsImpl implements UserDetails {
 		copyFoodSet(client.getFavFood());
 		this.name = client.getFirstName() + " " + client.getLastName();
 		this.id = client.getId();
+		this.refreshToken = null;
 	}
 	
 	
@@ -167,6 +171,18 @@ public class UserDetailsImpl implements UserDetails {
 
 	public void setId(long id) {
 		this.id = id;
+	}
+
+
+
+	public String getRefreshToken() {
+		return refreshToken;
+	}
+
+
+
+	public void setRefreshToken(String refreshToken) {
+		this.refreshToken = refreshToken;
 	}
 	
 	

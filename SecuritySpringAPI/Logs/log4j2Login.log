@@ -1,0 +1,6 @@
+2024-07-10 19:49:55,690 INFO c.f.s.a.LoggingRegister_LoginAspect [https-jsse-nio-8080-exec-6] User Logged Successfully:
+id: 1
+name: Seif Mohamed
+email: seif@gmail.com
+
+

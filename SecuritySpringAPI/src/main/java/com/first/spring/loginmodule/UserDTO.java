@@ -23,6 +23,8 @@ public class UserDTO implements Serializable {
 	private String token;
 	
     private String address;
+    
+    private String refreshToken;
 
     private Set<Food> favFood = new HashSet<>();
 
@@ -37,6 +39,7 @@ public class UserDTO implements Serializable {
 		this.setRoles(client.getRoles());
 		this.setName(client.getFullName());
 		this.id = client.getId();
+		this.refreshToken = client.getRefreshToken();
 	}
 	
 	
@@ -141,6 +144,20 @@ public class UserDTO implements Serializable {
 
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
+	}
+
+
+
+
+	public String getRefreshToken() {
+		return refreshToken;
+	}
+
+
+
+
+	public void setRefreshToken(String refreshToken) {
+		this.refreshToken = refreshToken;
 	}
 
 	

@@ -14,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.first.spring.authmodule.Role;
+import com.first.spring.refreshtoken.RefreshTokenService;
 import com.first.spring.utilities.CacheService;
 import com.first.spring.utilities.Constants;
 import com.first.spring.utilities.JwtTokenUtil;
@@ -27,19 +28,23 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+	private JwtTokenUtil jwtUtil;
+	private CacheService cacheService;
+
+	public JwtAuthenticationFilter(JwtTokenUtil jwtUtil, CacheService cacheService) {
+		this.jwtUtil = jwtUtil;
+		this.cacheService = cacheService;
+	}
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 
-		JwtTokenUtil jwtUtil = new JwtTokenUtil(); // cannot autowire
-		CacheService service = new CacheService();
-		
 		String token = jwtUtil.extractToken(request);
 		String path = request.getServletPath();
 		boolean needsAuthentication = true;
-		for(String publicEndPoint : Constants.PUBLIC_ENDPOINTS) {
-			if(path.contains(publicEndPoint)) {
+		for (String publicEndPoint : Constants.PUBLIC_ENDPOINTS) {
+			if (path.contains(publicEndPoint)) {
 				needsAuthentication = false;
 				break;
 			}
@@ -58,11 +63,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 					for (LinkedHashMap<String, String> confusion : authoritiesClaim) {
 						authorities.add(new Role(confusion.get("authority")));
 					}
-
+					
 					Date expiration = claims.getExpiration();
 					if (expiration.before(new Date())) {
 						// Handle token expiration
-						service.evictUserFromCache(email);
+						cacheService.evictUserFromCache(email);
 						throw new JwtException("Token has expired");
 					}
 					Authentication authentication = new UsernamePasswordAuthenticationToken(email, "", authorities);

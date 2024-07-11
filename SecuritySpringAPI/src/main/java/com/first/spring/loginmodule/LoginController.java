@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.first.spring.refreshtoken.RefreshTokenRepo;
+import com.first.spring.refreshtoken.RefreshTokenService;
 import com.first.spring.utilities.AESEncryptor;
 import com.first.spring.utilities.CacheService;
 import com.first.spring.utilities.JwtTokenUtil;
@@ -37,6 +39,7 @@ public class LoginController {
 	
 	@Autowired
 	private AESEncryptor encryptor;
+	
 	
 	
 	//private Logger logger = Loggers.getControllersLogger();
@@ -98,6 +101,8 @@ public class LoginController {
 		SecurityContextHolder.clearContext();
 	}
 
+	
+	
 	//
 	// return ResponseEntity.ok(token);
 

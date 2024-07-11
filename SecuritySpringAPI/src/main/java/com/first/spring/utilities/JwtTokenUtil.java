@@ -5,10 +5,13 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import com.first.spring.loginmodule.UserDetailsImpl;
+import com.first.spring.refreshtoken.RefreshToken;
+import com.first.spring.refreshtoken.RefreshTokenService;
 
 import javax.crypto.SecretKey;
 
@@ -18,12 +21,13 @@ import java.util.Map;
 
 public class JwtTokenUtil {
 
-	private final SecretKey SECRET = Constants.SECRET; 
-    private final int JWT_TOKEN_VALIDITY = Constants.VALIDITY; // 5 hours in ms (customizable)
-    
+	private final SecretKey SECRET = Constants.SECRET;
+	private final int JWT_TOKEN_VALIDITY = Constants.JWT_TOKEN_VALIDITY;
 
-    
-    public String generateAccessToken(UserDetailsImpl userDetails) {
+
+	public String generateAccessToken(UserDetailsImpl userDetails) {
+		    	
+
         Map<String, Object> claims = new HashMap<>();
         claims.put("email", userDetails.getUsername());
         claims.put("roles", userDetails.getAuthorities());
@@ -41,35 +45,29 @@ public class JwtTokenUtil {
                 .subject(userDetails.getUsername())
                 .compact();
     }
-    
 
-    public String extractToken(HttpServletRequest request) {
+	public String extractToken(HttpServletRequest request) {
 		String bearerToken = request.getHeader("Authorization");
 		if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
 			return bearerToken.substring(7);
 		}
 		return null;
 	}
-    
-       
-    public Claims getAllClaimsFromToken(String token) throws JwtException {
-        return Jwts.parser().verifyWith(Constants.SECRET).build().parseSignedClaims(token).getPayload();
-    }
 
-    public String extractSubject(String token) {
-        return getAllClaimsFromToken(token).getSubject();
-    }
+	public Claims getAllClaimsFromToken(String token) throws JwtException {
+		return Jwts.parser().verifyWith(Constants.SECRET).build().parseSignedClaims(token).getPayload();
+	}
 
-    public String extractIssuer(String token) {
-        return getAllClaimsFromToken(token).getIssuer();
-    }
+	public String extractSubject(String token) {
+		return getAllClaimsFromToken(token).getSubject();
+	}
 
-    public Long extractExpiration(String token) {
-        return getAllClaimsFromToken(token).getExpiration().getTime();
-    }
+	public String extractIssuer(String token) {
+		return getAllClaimsFromToken(token).getIssuer();
+	}
 
-        
-    
-
+	public Long extractExpiration(String token) {
+		return getAllClaimsFromToken(token).getExpiration().getTime();
+	}
 
 }

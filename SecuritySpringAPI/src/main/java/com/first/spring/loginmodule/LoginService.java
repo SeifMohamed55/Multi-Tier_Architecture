@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 
 import com.first.spring.clientmodule.Client;
 import com.first.spring.clientmodule.ClientRepository;
+import com.first.spring.refreshtoken.RefreshToken;
+import com.first.spring.refreshtoken.RefreshTokenService;
 import com.first.spring.utilities.CacheService;
 import com.first.spring.utilities.Constants;
 import com.first.spring.utilities.JwtTokenUtil;
@@ -33,6 +35,9 @@ public class LoginService implements UserDetailsService  {
 	@Autowired
 	private CacheService cacheService;
 	
+	@Autowired
+	private RefreshTokenService tokenService;
+	
 	//private Logger logger = Loggers.getDBLogger();
 	
 	public UserDetailsImpl logIn(String email, String password) {
@@ -53,8 +58,11 @@ public class LoginService implements UserDetailsService  {
 		
 		if(encoder.matches(password, client.getPassword())) {
 			client.getAuthorities().size();
+			RefreshToken token = tokenService.createRefreshToken(client);
 			UserDetailsImpl clientDetails = saveToCache(client);
-			clientDetails.setToken(jwtUtil.generateAccessToken(clientDetails));
+			clientDetails.setRefreshToken(token.getToken());
+			String jwtToken = jwtUtil.generateAccessToken(clientDetails);
+			clientDetails.setToken(jwtToken);
 			return clientDetails;
 		}
 		return null;

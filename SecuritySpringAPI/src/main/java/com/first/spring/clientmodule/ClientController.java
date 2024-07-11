@@ -66,10 +66,9 @@ public class ClientController {
 			client.setAddress(entity.getAddress());
 			client.setFirstName(entity.getFirstName());
 			client.setLastName(entity.getLastName());
-			var savedClient = clientServ.saveClientWithoutChangingPass(client);
-			var token = jwtUtil.generateAccessToken(savedClient);
-			savedClient.setToken(token);
-			return ResponseEntity.ok(new UserDTO(savedClient));
+			var savedClientDetails = clientServ.saveClientWithoutChangingPass(client);
+			savedClientDetails.setToken(extractedToken);
+			return ResponseEntity.ok(new UserDTO(savedClientDetails));
 			
 		} catch (Exception e) {
 			//logger.error(e.getLocalizedMessage());
